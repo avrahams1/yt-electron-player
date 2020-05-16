@@ -1,0 +1,1 @@
+run powershell as admin, run: Set-ExecutionPolicy RemoteSigned

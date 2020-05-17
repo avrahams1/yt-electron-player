@@ -36,7 +36,7 @@ class ContextMenu extends React.Component {
   render() {
     return (
       <div id="contextmenu">
-        <Link to={ROUTES.WELCOME} className="left">
+        <Link to={ROUTES.MAIN} className="left">
           Go back
         </Link>
         <div>

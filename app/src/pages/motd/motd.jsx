@@ -39,7 +39,7 @@ class Motd extends React.Component {
   render() {
     return (
       <div id="motd">
-        <Link to={ROUTES.WELCOME} className="left">Go back</Link>
+        <Link to={ROUTES.MAIN} className="left">Go back</Link>
         <div className="motd">{this.props.home.message}</div>
         <div>
           <form onSubmit={this.onSubmitMessage}>

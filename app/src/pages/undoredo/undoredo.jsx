@@ -76,7 +76,7 @@ class UndoRedo extends React.Component {
   render() {
     return (
       <div id="undoredo">
-        <Link to={ROUTES.WELCOME} className="left">
+        <Link to={ROUTES.MAIN} className="left">
           Go back
         </Link>
         <div className="undoredo">Undo/Redo</div>

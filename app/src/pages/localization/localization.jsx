@@ -9,7 +9,7 @@ class Localization extends React.Component {
     const { t } = this.props;
     return (
       <div id="localization">
-          <Link to={ROUTES.WELCOME} className="left">Go back</Link>
+          <Link to={ROUTES.MAIN} className="left">Go back</Link>
         <div className="localization">{t("Hello")}</div>
         <div className="italics">
             Try changing the language in the menu bar!

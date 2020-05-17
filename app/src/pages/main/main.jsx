@@ -180,7 +180,7 @@ class Main extends React.Component {
         {currentSongIndex !== -1 &&
           <div style={{ marginLeft: "15px" }}>
             <div>
-              Currently playing: {list[currentSongIndex].name}
+              Currently playing: {list[currentSongIndex].name} [{list[currentSongIndex].id}]
             </div>
             <div>
               <button onClick={this.previous.bind(this)}>Previous</button>

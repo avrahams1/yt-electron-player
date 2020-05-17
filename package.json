@@ -1,6 +1,6 @@
 {
   "name": "secure-electron-template",
-  "version": "4.0.4",
+  "version": "1.0.0",
   "description": "The best way to build Electron apps with security in mind.",
   "private": true,
   "main": "app/electron/main.js",
@@ -25,9 +25,7 @@
     },
     "win": {
       "target": [
-        "msi",
-        "portable",
-        "nsis"
+        "portable"
       ]
     },
     "mac": {

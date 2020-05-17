@@ -178,7 +178,7 @@ class Main extends React.Component {
       <React.Fragment>
         <div id="ytplayer" />
         {currentSongIndex !== -1 &&
-          <React.Fragment>
+          <div style={{ marginLeft: "15px" }}>
             <div>
               Currently playing: {list[currentSongIndex].name}
             </div>
@@ -193,7 +193,7 @@ class Main extends React.Component {
             <div>
               Next song: {list[nextIndex].name}
             </div>
-          </React.Fragment>}
+          </div>}
       </React.Fragment>
     );
   }

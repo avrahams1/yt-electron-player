@@ -70,10 +70,15 @@ class Main extends React.Component {
     if (currList !== prevList) {
       this.setState({ currentSongIndex: 0 });
     } else if (currIsPlayerReady !== prevIsPlayerReady && currCurrSongIndex !== -1) {
-      ytPlayer.loadVideoById(currList[currCurrSongIndex].id);
+      this.loadSong();
     } else if (currCurrSongIndex !== prevCurrSongIndex && currIsPlayerReady) {
-      ytPlayer.loadVideoById(currList[currCurrSongIndex].id);
+      this.loadSong();
     }
+  }
+
+  loadSong() {
+    const { list, currentSongIndex, ytPlayer } = this.state;
+    ytPlayer.loadVideoById(list[currentSongIndex].id);
   }
 
   getRandomArbitrary(min, max) {
@@ -175,14 +180,14 @@ class Main extends React.Component {
       nextIndex = (currentSongIndex + 1) % list.length;
 
     return (
-      <React.Fragment>
+      <div className="main-container">
         <div id="ytplayer" />
         {currentSongIndex !== -1 &&
-          <div style={{ marginLeft: "15px" }}>
+          <div className="text-lines">
             <div>
-              Currently playing: {list[currentSongIndex].name} [{list[currentSongIndex].id}]
+              Currently playing: {list[currentSongIndex].name}
             </div>
-            <div>
+            <div className="controls">
               <button onClick={this.previous.bind(this)}>Previous</button>
               <button onClick={this.next.bind(this)}>Next</button>
               <button onClick={this.refreshList.bind(this)}>Refresh list from YT</button>
@@ -194,7 +199,7 @@ class Main extends React.Component {
               Next song: {list[nextIndex].name}
             </div>
           </div>}
-      </React.Fragment>
+      </div>
     );
   }
 }

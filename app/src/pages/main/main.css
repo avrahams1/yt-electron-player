@@ -1,0 +1,16 @@
+.main-container {
+  padding-left: 20px;
+  padding-top: 20px;
+}
+
+.main-container > .text-lines {
+  color: lightgreen;
+}
+
+.main-container > .text-lines > div {
+  margin-bottom: 10px;
+}
+
+.main-container > .text-lines > .controls > button {
+  margin-right: 5px;
+}

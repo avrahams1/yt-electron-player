@@ -3,6 +3,10 @@ import { readConfigRequest, readConfigResponse, writeConfigRequest, deleteConfig
 import axios from "axios";
 import "./main.css";
 
+/*
+to debug: --remote-debugging-port=8315
+*/
+
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -112,13 +116,6 @@ class Main extends React.Component {
   }
 
   loadPlaylistChunk({ resolve, pageToken = "", prevItems = [] }) {
-    const requestObj = {
-      playlistId: "PL8wFHI7-y_0w4AShZqurXcJIayFB9_jCa",
-      maxResults: 50,
-      part: "snippet",
-      pageToken
-    }
-
     axios.get(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=PL8wFHI7-y_0w4AShZqurXcJIayFB9_jCa&key=AIzaSyCu5KvidzCYLOY6mP0j9fXVCltfFuvkeGM&pageToken=${pageToken}`).then(response => {
       const { data: { nextPageToken, items: currItems } } = response;
 

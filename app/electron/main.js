@@ -6,6 +6,7 @@ const {
   ipcMain,
   Menu
 } = require("electron");
+const express = require("express");
 const Protocol = require("./protocol");
 const MenuBuilder = require("./menu");
 const i18nextBackend = require("i18next-electron-fs-backend");
@@ -87,7 +88,16 @@ async function createWindow() {
   if (isDev) {
     win.loadURL(selfHost);
   } else {
-    win.loadURL(`${Protocol.scheme}://rse/index-prod.html`);
+    const app = express()
+    const initialPort = 0;
+
+    app.use(express.static('appdist'));
+
+    const listener = app.listen(initialPort, function () {
+      const port = listener.address().port;
+      console.log('Listening on port ' + port);
+      win.loadURL(`http://localhost:${port}/index-prod.html`);
+    });
   }
 
   // Only do these things when in development

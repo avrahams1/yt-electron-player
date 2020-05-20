@@ -19,7 +19,7 @@
   },
   "build": {
     "productName": "YT Player",
-    "appId": "com.yourcompany|electron.yourproductname",
+    "appId": "umbrella.corp|electron.yt-player",
     "directories": {
       "buildResources": "resources"
     },

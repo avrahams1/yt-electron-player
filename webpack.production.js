@@ -18,9 +18,9 @@ module.exports = merge(base, {
       {
         "base-uri": ["'self'"],
         "object-src": ["'none'"],
-        "script-src": ["https://www.youtube.com/iframe_api", "https://s.ytimg.com/yts/jsbin/www-widgetapi-vflZIrlU7/www-widgetapi.js"],
+        "script-src": ["https://www.youtube.com", "https://s.ytimg.com"],
         "style-src": ["'self'"],
-        "frame-src": ["https://www.youtube.com/", "https://content.googleapis.com/"],
+        "frame-src": ["https://www.youtube.com", "https://content.googleapis.com"],
         "worker-src": ["'none'"]
       },
       {

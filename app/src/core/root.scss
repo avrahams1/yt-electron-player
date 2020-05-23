@@ -4,4 +4,9 @@
 
 .content {
   width: 60vw;
+
+  & > * {
+    display: block;
+    margin-bottom: 10px;
+  }
 }

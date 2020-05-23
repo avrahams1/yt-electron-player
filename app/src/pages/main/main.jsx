@@ -1,6 +1,7 @@
 import React from "react";
 import { readConfigRequest, readConfigResponse, writeConfigRequest, deleteConfigRequest, deleteConfigResponse } from "secure-electron-store";
 import axios from "axios";
+import FlexView from 'react-flexview';
 import styles from "./main.scss";
 
 /*
@@ -177,26 +178,28 @@ class Main extends React.Component {
       nextIndex = (currentSongIndex + 1) % list.length;
 
     return (
-      <div className={styles.container}>
-        <div id="ytplayer" />
-        {currentSongIndex !== -1 &&
-          <div className={styles.textLines}>
-            <div>
-              Currently playing: {list[currentSongIndex].name}
-            </div>
-            <div className={styles.controls}>
-              <button onClick={this.previous.bind(this)}>Previous</button>
-              <button onClick={this.next.bind(this)}>Next</button>
-              <button onClick={this.refreshList.bind(this)}>Refresh list from YT</button>
-            </div>
-            <div>
-              Previous song: {list[prevIndex].name}
-            </div>
-            <div>
-              Next song: {list[nextIndex].name}
-            </div>
-          </div>}
-      </div>
+      <FlexView column hAlignContent="center" className={styles.container}>
+        <div>
+          <div id="ytplayer" />
+          {currentSongIndex !== -1 &&
+            <div className={styles.textLines}>
+              <div>
+                Currently playing: {list[currentSongIndex].name}
+              </div>
+              <div className={styles.controls}>
+                <button onClick={this.previous.bind(this)}>Previous</button>
+                <button onClick={this.next.bind(this)}>Next</button>
+                <button onClick={this.refreshList.bind(this)}>Refresh list from YT</button>
+              </div>
+              <div>
+                Previous song: {list[prevIndex].name}
+              </div>
+              <div>
+                Next song: {list[nextIndex].name}
+              </div>
+            </div>}
+          </div>
+      </FlexView>
     );
   }
 }

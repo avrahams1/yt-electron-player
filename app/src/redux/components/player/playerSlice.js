@@ -7,8 +7,7 @@ const googleApiToken = "AIzaSyCu5KvidzCYLOY6mP0j9fXVCltfFuvkeGM";
 export const loadPlaylist = createAsyncThunk(
   "playlist/get",
   forceRefresh => {
-    return (forceRefresh ? deleteCachedList() : Promise.resolve())
-      .then(loadPlaylistFromMemory)
+    return (forceRefresh ? deleteCachedList : loadPlaylistFromMemory)()
       .catch(loadPlaylistFromAPI)
       .then(shuffle)
   }
@@ -54,7 +53,7 @@ function loadPlaylistFromMemory() {
 }
 
 function deleteCachedList() {
-  return new Promise(resolve => sendStoreRequestAndRegisterForResponse(deleteConfigRequest, deleteConfigResponse, resolve));
+  return new Promise((_, reject) => sendStoreRequestAndRegisterForResponse(deleteConfigRequest, deleteConfigResponse, reject));
 }
 
 function sendStoreRequestAndRegisterForResponse(requestType, responseType, cb, ...additionalReadParams) {
@@ -106,8 +105,6 @@ function clearPrevStoreBindings() {
 }
 
 function getRandomInRange(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 

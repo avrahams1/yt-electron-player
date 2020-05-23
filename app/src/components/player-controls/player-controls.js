@@ -4,7 +4,7 @@ import { connect, useDispatch } from "react-redux";
 
 import styles from "./player-controls.scss";
 
-const PlayerControlsComponent = ({ currentSong, prevSong, nextSong, reshuffle, jumpToPrevSong, jumpToNextSong, loadPlaylist }) => {
+const PlayerControlsComponent = ({ currentSong, prevSong, nextSong, reshuffle, jumpToPrevSong, jumpToNextSong }) => {
   const dispatch = useDispatch();
   const reloadPlaylist = () => dispatch(loadPlaylist(true));
 
@@ -42,6 +42,6 @@ const mapStateToProps = (state, props) => {
   return { currentSong, prevSong, nextSong };
 };
 
-const mapDispatch = { reshuffle, jumpToPrevSong, jumpToNextSong, loadPlaylist };
+const mapDispatch = { reshuffle, jumpToPrevSong, jumpToNextSong };
 
 export default connect(mapStateToProps, mapDispatch)(PlayerControlsComponent);

@@ -28,7 +28,7 @@ module.exports = merge(base, {
     new CspHtmlWebpackPlugin({
       "base-uri": ["'self'"],
       "object-src": ["'none'"],
-      "script-src": ["https://www.youtube.com", "https://s.ytimg.com"],
+      "script-src": ["'Self'","https://www.youtube.com", "https://s.ytimg.com"],
       "style-src": ["'self'"],
       "frame-src": ["https://www.youtube.com", "https://content.googleapis.com"],
       "worker-src": ["'none'"]

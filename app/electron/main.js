@@ -1,4 +1,3 @@
-const electron = require("electron");
 const {
   app,
   protocol,
@@ -6,7 +5,7 @@ const {
   session,
   ipcMain,
   Menu
-} = electron;
+} = require("electron");
 const os = require("os");
 const express = require("express");
 const Protocol = require("./protocol");
@@ -90,26 +89,24 @@ async function createWindow() {
   if (isDev) {
     win.loadURL(selfHost);
   } else {
-    const app = express()
-    const initialPort = 8081;
+    const expressApp = express()
+    const initialPort = 0;
+    const appdistFolder = "appdist";
 
-    app.get("/hello", (req, res) => {
-      res.send("hello");
-    });
+    let staticFilesPath;
 
-    app.get("/path", (req, res) => {
-      res.send(electron.app.getPath("exe"));
-    });
+    switch (os.type()) {
+      case "Darwin": 
+        staticFilesPath = path.resolve(app.getPath("exe"), "..", "..", appdistFolder);
+        break;
+      case "Windows_NT":
+      default:
+        staticFilesPath = appdistFolder;
+    }
 
-    app.get("/os", (req, res) => {
-      res.send(os.type() + " " + path.resolve(electron.app.getPath("exe"), "..", "..", "appdist"));
-    });
+    expressApp.use(express.static(staticFilesPath));
 
-    const staticFilesPath = os.type() === "Windows_NT" ? "appdist" : path.resolve(electron.app.getPath("exe"), "..", "..", "appdist");
-
-    app.use(express.static(staticFilesPath));
-
-    const listener = app.listen(initialPort, function () {
+    const listener = expressApp.listen(initialPort, function () {
       const port = listener.address().port;
       console.log('Listening on port ' + port);
       win.loadURL(`http://localhost:${port}/index-prod.html`);

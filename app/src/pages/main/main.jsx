@@ -1,7 +1,7 @@
 import React from "react";
 import { readConfigRequest, readConfigResponse, writeConfigRequest, deleteConfigRequest, deleteConfigResponse } from "secure-electron-store";
 import axios from "axios";
-import "./main.css";
+import styles from "./main.scss";
 
 /*
 to debug: --remote-debugging-port=8315
@@ -177,14 +177,14 @@ class Main extends React.Component {
       nextIndex = (currentSongIndex + 1) % list.length;
 
     return (
-      <div className="main-container">
+      <div className={styles.container}>
         <div id="ytplayer" />
         {currentSongIndex !== -1 &&
-          <div className="text-lines">
+          <div className={styles.textLines}>
             <div>
               Currently playing: {list[currentSongIndex].name}
             </div>
-            <div className="controls">
+            <div className={styles.controls}>
               <button onClick={this.previous.bind(this)}>Previous</button>
               <button onClick={this.next.bind(this)}>Next</button>
               <button onClick={this.refreshList.bind(this)}>Refresh list from YT</button>

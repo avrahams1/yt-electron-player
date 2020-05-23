@@ -6,8 +6,7 @@ const {
   ipcMain,
   Menu
 } = require("electron");
-const os = require("os");
-const express = require("express");
+const productionServer = require("./production-server");
 const Protocol = require("./protocol");
 const MenuBuilder = require("./menu");
 const i18nextBackend = require("i18next-electron-fs-backend");
@@ -89,28 +88,7 @@ async function createWindow() {
   if (isDev) {
     win.loadURL(selfHost);
   } else {
-    const expressApp = express()
-    const initialPort = 0;
-    const appdistFolder = "appdist";
-
-    let staticFilesPath;
-
-    switch (os.type()) {
-      case "Darwin": 
-        staticFilesPath = path.resolve(app.getPath("exe"), "..", "..", appdistFolder);
-        break;
-      case "Windows_NT":
-      default:
-        staticFilesPath = appdistFolder;
-    }
-
-    expressApp.use(express.static(staticFilesPath));
-
-    const listener = expressApp.listen(initialPort, function () {
-      const port = listener.address().port;
-      console.log('Listening on port ' + port);
-      win.loadURL(`http://localhost:${port}/index-prod.html`);
-    });
+    productionServer.startProductionServer().then(url => win.loadURL(url));
   }
 
   // Only do these things when in development
@@ -125,6 +103,7 @@ async function createWindow() {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     win = null;
+    !isDev && productionServer.closeProductionServer();
   });
 
   // https://electronjs.org/docs/tutorial/security#4-handle-session-permission-requests-from-remote-content

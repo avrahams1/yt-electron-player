@@ -1,21 +1,49 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { readConfigRequest, readConfigResponse, writeConfigRequest, deleteConfigRequest, deleteConfigResponse } from "secure-electron-store";
+import { readConfigRequest, readConfigResponse, writeConfigRequest, writeConfigResponse } from "secure-electron-store";
 import axios from "axios";
 
 const googleApiToken = "AIzaSyCu5KvidzCYLOY6mP0j9fXVCltfFuvkeGM";
 
+export const loadPlaylistIds = createAsyncThunk(
+  "playlists/get",
+  getPlaylistIds
+)
+
+export const saveIds = createAsyncThunk(
+  "playlists/save",
+  savePlaylistIds
+)
+
 export const loadPlaylist = createAsyncThunk(
   "playlist/get",
   forceRefresh => {
-    return (forceRefresh ? deleteCachedList : loadPlaylistFromMemory)()
-      .catch(loadPlaylistFromAPI)
-      .then(shuffle)
+    return getPlaylistIds()
+      .then(ids => { 
+        const promises = ids.map(id => {
+          return (forceRefresh ? Promise.reject() : loadPlaylistFromMemory(id))
+            .catch(() => loadPlaylistFromAPI(id))
+        });
+
+        return Promise.all(promises);
+    })
+    .then(resultArrays => {
+      const dict = {};
+      resultArrays.forEach(arr => {
+        arr.forEach(song => {
+          dict[song.id] = song;
+        })
+      });
+
+      return Object.values(dict);
+    })
+    .then(shuffle);
   }
 )
 
 const playerSlice = createSlice({
   name: "player",
   initialState: {
+    playlistIDs: null,
     list: null,
     currentSongIndex: null,
     currentSong: null,
@@ -38,53 +66,84 @@ const playerSlice = createSlice({
     [loadPlaylist.fulfilled]: (state, action) => {
       state.list = action.payload;
       setCurrentIndex(state, 0);
+    },
+    [loadPlaylistIds.fulfilled]: (state, action) => {
+      state.playlistIDs = action.payload;
+    },
+    [saveIds.fulfilled]: (state, action) => {
+      state.playlistIDs = action.payload;
     }
   }
 })
 
-function loadPlaylistFromMemory() {
-  return new Promise((resolve, reject) => sendStoreRequestAndRegisterForResponse(readConfigRequest, readConfigResponse, args => {
+function loadPlaylistFromMemory(playlistId) {
+  return new Promise((resolve, reject) => sendStoreRequestAndRegisterForResponse({ requestType: readConfigRequest, responseType: readConfigResponse, clearBindings: false, cb: args => {
     if (args.success && args.value) {
       resolve(args.value);
     } else {
       reject();
     }
-  }, "playlist"));
+  }}, `playlist-${playlistId}`));
 }
 
-function deleteCachedList() {
-  return new Promise((_, reject) => sendStoreRequestAndRegisterForResponse(deleteConfigRequest, deleteConfigResponse, reject));
-}
-
-function sendStoreRequestAndRegisterForResponse(requestType, responseType, cb, ...additionalReadParams) {
-  clearPrevStoreBindings();
+function sendStoreRequestAndRegisterForResponse({ requestType, responseType, cb, clearBindings = true }, ...additionalReadParams) {
+  if (clearBindings) {
+    clearPrevStoreBindings();
+  }
 
   window.api.store.onReceive(responseType, cb);
 
   window.api.store.send(requestType, ...additionalReadParams);
 }
 
-function loadPlaylistFromAPI() {
-  return new Promise(resolve => loadPlaylistChunk({ resolve }))
+function loadPlaylistFromAPI(listId) {
+  // return Promise.resolve([
+  //   {
+  //     id: "RiFdyPOe3MA" + listId,
+  //     name: "TANKS!" + listId
+  //   },
+  //   {
+  //     id: "pKBRx2UYaxM" + listId,
+  //     name: "IMAGINE MY SHOCK" + listId
+  //   }
+  // ]);
+  return new Promise(resolve => loadPlaylistChunk({ playlistId: listId, resolve }))
     .then(results => {
-      window.api.store.send(writeConfigRequest, "playlist", results);
+      window.api.store.send(writeConfigRequest, `playlist-${listId}`, results);
       return results;
     });
 }
 
-function loadPlaylistChunk({ resolve, pageToken = "", prevItems = [] }) {
-  axios.get(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=PL8wFHI7-y_0w4AShZqurXcJIayFB9_jCa&key=${googleApiToken}&pageToken=${pageToken}`).then(response => {
+function loadPlaylistChunk({ playlistId, resolve, pageToken = "", prevItems = [] }) {
+  axios.get(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${playlistId}&key=${googleApiToken}&pageToken=${pageToken}`).then(response => {
     const { data: { nextPageToken, items: currItems } } = response;
 
     let currItemsMapped = currItems.map(item => ({ name: item.snippet.title, id: item.snippet.resourceId.videoId }));
     let totalItems = [...prevItems, ...currItemsMapped];
 
     if (nextPageToken) {
-      loadPlaylistChunk({ resolve, pageToken: nextPageToken, prevItems: totalItems });
+      loadPlaylistChunk({ playlistId, resolve, pageToken: nextPageToken, prevItems: totalItems });
     } else {
       resolve(totalItems);
     }
   });
+}
+
+function savePlaylistIds(ids) {
+  return new Promise(resolve => sendStoreRequestAndRegisterForResponse({ requestType: writeConfigRequest, responseType: writeConfigResponse, cb: () => {
+    resolve(ids)
+  }}, "playlistIds", ids));
+}
+
+function getPlaylistIds() {
+  return new Promise((resolve, reject) => sendStoreRequestAndRegisterForResponse({ requestType: readConfigRequest, responseType: readConfigResponse, cb: args => {
+    if (args.success && args.value) {
+      resolve(args.value);
+    } else {
+      reject();
+    }
+  }}, "playlistIds"))
+  .catch(() => (["PL8wFHI7-y_0w4AShZqurXcJIayFB9_jCa"]));
 }
 
 function shuffle(list) {

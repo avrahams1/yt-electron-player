@@ -1,7 +1,10 @@
 import React from "react";
 import { ConnectedRouter } from "connected-react-router";
-import { Provider, connect } from "react-redux";
+import { Provider } from "react-redux";
+import FlexView from 'react-flexview';
 import Routes from "Core/routes";
+
+import styles from "./root.scss";
 import "./root.global.scss";
 
 class Root extends React.Component {
@@ -11,7 +14,11 @@ class Root extends React.Component {
     return (
       <Provider store={store}>
         <ConnectedRouter history={history}>
-          <Routes></Routes>
+          <FlexView column hAlignContent="center" className={styles.container}>
+            <div className={styles.content}>
+              <Routes></Routes>
+            </div>
+          </FlexView>
         </ConnectedRouter>
       </Provider>
     );

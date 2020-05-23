@@ -1,0 +1,21 @@
+.container {
+  & > div {
+    margin-top: 10px;
+  }
+}
+
+.text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  span {
+    font-weight: bold;
+  }
+}
+
+.buttons {
+  & > button {
+    margin-right: 5px;
+  }
+}

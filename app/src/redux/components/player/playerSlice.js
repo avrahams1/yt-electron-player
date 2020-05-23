@@ -47,8 +47,6 @@ const playerSlice = createSlice({
     list: null,
     currentSongIndex: null,
     currentSong: null,
-    prevSong: null,
-    nextSong: null
   },
   reducers: {
     reshuffle(state, action) {
@@ -60,15 +58,15 @@ const playerSlice = createSlice({
     },
     jumpToPrevSong(state, action) {
       setCurrentIndex(state, getPrevSongIndex(state));
+    },
+    setNewSongIndex(state, action) {
+      setCurrentIndex(state, action.payload);
     }
   },
   extraReducers: {
     [loadPlaylist.fulfilled]: (state, action) => {
       state.list = action.payload;
       setCurrentIndex(state, 0);
-    },
-    [loadPlaylistIds.fulfilled]: (state, action) => {
-      state.playlistIDs = action.payload;
     },
     [saveIds.fulfilled]: (state, action) => {
       state.playlistIDs = action.payload;
@@ -171,8 +169,6 @@ function setCurrentIndex(state, newIndex) {
   const { list } = state;
   state.currentSongIndex = newIndex;
   state.currentSong = list[newIndex];
-  state.nextSong = list[getNextSongIndex(state)];
-  state.prevSong = list[getPrevSongIndex(state)];
 }
 
 function getNextSongIndex(state) {
@@ -191,6 +187,6 @@ function getPrevSongIndex(state) {
   return currentSongIndex - 1;
 }
 
-export const { reshuffle, jumpToPrevSong, jumpToNextSong } = playerSlice.actions;
+export const { reshuffle, jumpToPrevSong, jumpToNextSong, setNewSongIndex } = playerSlice.actions;
 
 export default playerSlice.reducer;

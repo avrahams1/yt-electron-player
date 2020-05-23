@@ -5,7 +5,7 @@ import { push } from "connected-react-router";
 import ROUTES from "Constants/routes";
 import { loadPlaylistIds, saveIds } from "Redux/components/player/playerSlice";
 
-const PlaylistPicker = ({ push, playlistIDs }) => {
+const PlaylistPicker = ({ push }) => {
   const [value, setValue] = useState(null);
   const dispatch = useDispatch();
 
@@ -40,12 +40,4 @@ const PlaylistPicker = ({ push, playlistIDs }) => {
   )
 }
 
-const mapStateToProps = (state, props) => {
-  const { playlistIDs } = state.player;
-  
-  return { playlistIDs };
-};
-
-const mapDispatch = { push };
-
-export default connect(mapStateToProps, { push })(PlaylistPicker);
+export default connect(null, { push })(PlaylistPicker);

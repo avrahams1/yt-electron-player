@@ -4,7 +4,7 @@ import { connect, useDispatch } from "react-redux";
 
 import styles from "./player-controls.scss";
 
-const PlayerControlsComponent = ({ currentSong, prevSong, nextSong, reshuffle, jumpToPrevSong, jumpToNextSong }) => {
+const PlayerControlsComponent = ({ currentSong, currentSongIndex, reshuffle, jumpToPrevSong, jumpToNextSong }) => {
   const dispatch = useDispatch();
   const reloadPlaylist = () => dispatch(loadPlaylist(true));
 
@@ -16,7 +16,7 @@ const PlayerControlsComponent = ({ currentSong, prevSong, nextSong, reshuffle, j
     <div className={styles.container}>
       <div className={styles.text}>
         <span>Current song: </span>
-        {currentSong.name}
+        [{currentSongIndex + 1}] {currentSong.name}
       </div>
       <div className={styles.buttons}>
         <button onClick={jumpToPrevSong}>Previous</button>
@@ -24,22 +24,14 @@ const PlayerControlsComponent = ({ currentSong, prevSong, nextSong, reshuffle, j
         <button onClick={reshuffle}>Reshuffle</button>
         <button onClick={reloadPlaylist}>Reload list from YT</button>
       </div>
-      <div className={styles.text}>
-        <span>Previous song: </span>
-        {prevSong.name}
-      </div>
-      <div className={styles.text}>
-        <span>Next song: </span>
-        {nextSong.name}
-      </div>
     </div>
   );
 };
 
 const mapStateToProps = (state, props) => {
-  const { currentSong, prevSong, nextSong } = state.player;
+  const { currentSong, currentSongIndex } = state.player;
   
-  return { currentSong, prevSong, nextSong };
+  return { currentSong, currentSongIndex };
 };
 
 const mapDispatch = { reshuffle, jumpToPrevSong, jumpToNextSong };

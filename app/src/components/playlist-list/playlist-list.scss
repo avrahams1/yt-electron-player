@@ -1,0 +1,25 @@
+.title {
+  font-size: 1.6em;
+  font-weight: bold;
+}
+
+.list {
+  max-height: 45vh;
+  overflow-y: scroll;
+
+  .item {
+    &:not(:last-child) {
+      margin-bottom: 20px;
+    }
+
+    a {
+      &:visited, &:hover, &:active {
+        color: inherit;
+      }
+    }
+    &.selected {
+      background-color: #ADEFD1FF;
+      color: #00203FFF;
+    }
+  }
+}

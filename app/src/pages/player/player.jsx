@@ -3,6 +3,7 @@ import { connect, useDispatch } from "react-redux";
 import { loadPlaylist } from "Redux/components/player/playerSlice";
 import PlayerVideo from "Components/player-video/player-video";
 import PlayerControls from "Components/player-controls/player-controls";
+import PlaylistList from "Components/playlist-list/playlist-list";
 
 /*
 to debug: --remote-debugging-port=8315
@@ -19,6 +20,7 @@ const PlayerComponent = () => {
     <React.Fragment>
       <PlayerVideo />
       <PlayerControls />
+      <PlaylistList />
     </React.Fragment>
   );
 };

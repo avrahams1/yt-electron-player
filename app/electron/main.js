@@ -1,3 +1,4 @@
+const electron = require("electron");
 const {
   app,
   protocol,
@@ -5,7 +6,8 @@ const {
   session,
   ipcMain,
   Menu
-} = require("electron");
+} = electron;
+const os = require("os");
 const express = require("express");
 const Protocol = require("./protocol");
 const MenuBuilder = require("./menu");
@@ -89,9 +91,23 @@ async function createWindow() {
     win.loadURL(selfHost);
   } else {
     const app = express()
-    const initialPort = 0;
+    const initialPort = 8081;
 
-    app.use(express.static('appdist'));
+    app.get("/hello", (req, res) => {
+      res.send("hello");
+    });
+
+    app.get("/path", (req, res) => {
+      res.send(electron.app.getPath("exe"));
+    });
+
+    app.get("/os", (req, res) => {
+      res.send(os.type() + " " + path.resolve(electron.app.getPath("exe"), "..", "..", "appdist"));
+    });
+
+    const staticFilesPath = os.type() === "Windows_NT" ? "appdist" : path.resolve(electron.app.getPath("exe"), "..", "..", "appdist");
+
+    app.use(express.static(staticFilesPath));
 
     const listener = app.listen(initialPort, function () {
       const port = listener.address().port;

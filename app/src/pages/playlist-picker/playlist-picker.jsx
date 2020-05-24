@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { connect, useDispatch } from "react-redux";
 import { unwrapResult } from '@reduxjs/toolkit'
+import FlexView from 'react-flexview';
 import { push } from "connected-react-router";
 import ROUTES from "Constants/routes";
 import { loadPlaylistIds, saveIds } from "Redux/components/player/playerSlice";
+
+import styles from "./playlist-picker.scss";
 
 const PlaylistPicker = ({ push }) => {
   const [value, setValue] = useState(null);
@@ -32,11 +35,11 @@ const PlaylistPicker = ({ push }) => {
   }
 
   return (
-    <React.Fragment>
+    <FlexView column hAlignContent="center" className={styles.container}>
       <div>Type playlist IDs, seperated by new lines:</div>
       <textarea rows="6" cols="50" value={value} onChange={onValueChanged}></textarea>
       <button onClick={onClick}>Play these playlists</button>
-    </React.Fragment>
+    </FlexView>
   )
 }
 

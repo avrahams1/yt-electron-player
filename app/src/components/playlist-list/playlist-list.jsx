@@ -88,7 +88,7 @@ class PlaylistList extends React.Component {
     }
 
     return (
-      <FlexView column hAlignContent="start" className={styles.container}>
+      <FlexView column hAlignContent="left" className={styles.container}>
         <input type="text" placeholder="Search" className={styles.searchBar} value={displaySearchTerm} onChange={this.onSearchTermChanged.bind(this)} />
         <FlexView column hAlignContent="left" className={styles.list}>
           {filteredList.map(this.renderListItem.bind(this))}

@@ -48,8 +48,8 @@ async function createWindow() {
 
   // Create the browser window.
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1700,
+    height: 830,
     title: `YouTube Playlist Randomizer (v.${app.getVersion()})`,
     webPreferences: {
       devTools: isDev,

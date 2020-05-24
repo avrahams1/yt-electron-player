@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect, useDispatch } from "react-redux";
 import FlexView from "react-flexview";
+import Tooltip from 'react-tooltip-lite';
 import { MdSkipPrevious, MdSkipNext } from "react-icons/md";
 import { BsShuffle } from "react-icons/bs";
 import { WiCloudRefresh } from "react-icons/wi";
@@ -23,14 +24,14 @@ const PlayerControlsComponent = ({ currentSong, currentSongIndex, reshuffle, jum
         [{currentSongIndex + 1}] {currentSong.name}
       </div>
       <FlexView style={{ justifyContent: "space-between" }} className={styles.buttons}>
-        <div>
+        <FlexView>
           <button onClick={jumpToPrevSong}><MdSkipPrevious /></button>
           <button onClick={jumpToNextSong}><MdSkipNext /></button>
-        </div>
-        <div>
-          <button onClick={reshuffle}><BsShuffle /></button>
-          <button onClick={reloadPlaylist}><WiCloudRefresh /></button>
-        </div>
+        </FlexView>
+        <FlexView>
+          <Tooltip content="Reshuffle playlist" direction="down"><button onClick={reshuffle}><BsShuffle /></button></Tooltip>
+          <Tooltip content="Reload playlist from YT" direction="down"><button onClick={reloadPlaylist}><WiCloudRefresh /></button></Tooltip>
+        </FlexView>
       </FlexView>
     </div>
   );

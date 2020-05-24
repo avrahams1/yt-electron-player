@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect, useDispatch } from "react-redux";
 import FlexView from "react-flexview";
-import Tooltip from 'react-tooltip-lite';
+import Tooltip from "react-tooltip-lite";
 import { MdSkipPrevious, MdSkipNext } from "react-icons/md";
 import { BsShuffle } from "react-icons/bs";
 import { WiCloudRefresh } from "react-icons/wi";

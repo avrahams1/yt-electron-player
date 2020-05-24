@@ -6,6 +6,8 @@ import PlayerVideo from "Components/player-video/player-video";
 import PlayerControls from "Components/player-controls/player-controls";
 import PlaylistList from "Components/playlist-list/playlist-list";
 
+import styles from "./player.scss";
+
 /*
 to debug: --remote-debugging-port=8315
 */
@@ -18,7 +20,7 @@ const PlayerComponent = () => {
   }, []);
 
   return (
-    <FlexView vAlignContent="center" style={{ justifyContent: "space-between" }}>
+    <FlexView className={styles.container} vAlignContent="center" style={{ justifyContent: "space-between" }}>
       <FlexView column>
         <PlayerVideo />
         <PlayerControls />

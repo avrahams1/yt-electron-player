@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from "react-redux";
+import { debounce } from "lodash";
 import { jumpToNextSong } from "Redux/components/player/playerSlice";
 
 const PlayerVideoComponent = ({ currentSong, jumpToNextSong }) => {
@@ -12,13 +13,36 @@ const PlayerVideoComponent = ({ currentSong, jumpToNextSong }) => {
 
   useEffect(() => {
     if (!currentSong || !isPlayerReady || !ytPlayer) return;
+    resizeYTPlayer(ytPlayer);
     ytPlayer.loadVideoById(currentSong.id);
   }, [currentSong, isPlayerReady, ytPlayer])
+
+  useEffect(() => {
+    if (!ytPlayer) {
+      return;
+    }
+
+    window.onresize = debounce(() => resizeYTPlayer(ytPlayer), 500)
+
+    return () => {
+      window.onresize = undefined;
+    };
+  }, [ytPlayer])
 
   return (
     <div id="ytplayer" />
   );
 };
+
+function resizeYTPlayer(ytPlayer) {
+  const ratio = 39.0/64.0;
+  const parent = document.getElementById("ytplayer").parentElement;
+  const { clientWidth: newWidth } = parent;
+
+  const newHeight = newWidth * ratio;
+
+  ytPlayer.setSize(newWidth, newHeight);
+}
 
 function initYTPlayer(setYtPlayer, playerReady, jumpToNextSong) {
   const tag = document.createElement('script');

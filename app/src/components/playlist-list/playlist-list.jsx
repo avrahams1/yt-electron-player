@@ -79,12 +79,20 @@ class PlaylistList extends React.Component {
     let filteredList = list.map((item, index) => ({ item, index }));
 
     if (currentSearchTerm) {
-      const lowerCaseSearchTerms = currentSearchTerm.toLowerCase().split(" ").filter(str => str && str.length >= 2);
-      filteredList = filteredList.filter(({ item }) => {
-        const currItemName = item.name.toLowerCase();
+      const lowerCaseSearchTerms = currentSearchTerm
+        .toLowerCase()
+        .split(" ")
+        .filter(str => str)
+        .map(str => str.trim())
+        .filter(str => str);
+        
+      if (lowerCaseSearchTerms.length) {
+        filteredList = filteredList.filter(({ item }) => {
+          const currItemName = item.name.toLowerCase();
 
-        return lowerCaseSearchTerms.every(subStr => currItemName.indexOf(subStr) !== -1);
-      });
+          return lowerCaseSearchTerms.every(subStr => currItemName.indexOf(subStr) !== -1);
+        });
+      }
     }
 
     return (

@@ -21,6 +21,10 @@
       border-bottom: 1px solid #ADEFD1FF;
     }
 
+    &:focus {
+      outline: none;
+    }
+
     margin-right: 10px;
     background-color: inherit;
     padding: inherit;

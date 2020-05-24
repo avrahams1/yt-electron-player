@@ -22,7 +22,7 @@ const PlayerVideoComponent = ({ currentSong, jumpToNextSong }) => {
       return;
     }
 
-    window.onresize = debounce(() => resizeYTPlayer(ytPlayer), 500)
+    window.onresize = debounce(() => resizeYTPlayer(ytPlayer), 200)
 
     return () => {
       window.onresize = undefined;

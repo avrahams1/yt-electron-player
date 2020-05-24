@@ -20,12 +20,12 @@ const PlayerComponent = () => {
   }, []);
 
   return (
-    <FlexView className={styles.container} vAlignContent="center" style={{ justifyContent: "space-between" }}>
-      <FlexView column>
+    <FlexView vAlignContent="center" style={{ justifyContent: "space-between" }}>
+      <FlexView column className={styles.playerContainer}>
         <PlayerVideo />
         <PlayerControls />
       </FlexView>
-      <FlexView column>
+      <FlexView column className={styles.listContainer}>
         <PlaylistList />
       </FlexView>
     </FlexView>

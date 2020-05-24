@@ -29,8 +29,8 @@ const PlayerControlsComponent = ({ currentSong, currentSongIndex, reshuffle, jum
           <button onClick={jumpToNextSong}><MdSkipNext /></button>
         </FlexView>
         <FlexView>
-          <Tooltip content="Reshuffle playlist" direction="down"><button onClick={reshuffle}><BsShuffle /></button></Tooltip>
-          <Tooltip content="Reload playlist from YT" direction="down"><button onClick={reloadPlaylist}><WiCloudRefresh /></button></Tooltip>
+          <Tooltip content="Reshuffle playlist" direction="left" background="black" color="white"><button onClick={reshuffle}><BsShuffle /></button></Tooltip>
+          <Tooltip content="Reload playlist from YT" direction="right" background="black" color="white"><button onClick={reloadPlaylist}><WiCloudRefresh /></button></Tooltip>
         </FlexView>
       </FlexView>
     </div>

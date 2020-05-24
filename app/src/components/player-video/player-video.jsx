@@ -13,7 +13,6 @@ const PlayerVideoComponent = ({ currentSong, jumpToNextSong }) => {
 
   useEffect(() => {
     if (!currentSong || !isPlayerReady || !ytPlayer) return;
-    resizeYTPlayer(ytPlayer);
     ytPlayer.loadVideoById(currentSong.id);
   }, [currentSong, isPlayerReady, ytPlayer])
 
@@ -22,6 +21,7 @@ const PlayerVideoComponent = ({ currentSong, jumpToNextSong }) => {
       return;
     }
 
+    resizeYTPlayer(ytPlayer);
     window.onresize = debounce(() => resizeYTPlayer(ytPlayer), 200)
 
     return () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDom from "react-dom";
 import { connect } from "react-redux";
-import debounce from "lodash.debounce";
+import { debounce } from "lodash";
 import classNames from "classnames";
 import FlexView from 'react-flexview';
 import { setNewSongIndex } from "Redux/components/player/playerSlice";

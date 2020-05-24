@@ -1,8 +1,9 @@
 const { app } = require("electron");
 const os = require("os");
+const path = require("path");
 const express = require("express");
 
-var listener = null;
+let listener = null;
 const initialPort = 0;
 const appdistFolder = "appdist";
 

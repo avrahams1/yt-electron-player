@@ -1,6 +1,10 @@
 import React from 'react'
-import { reshuffle, jumpToPrevSong, jumpToNextSong, loadPlaylist } from "Redux/components/player/playerSlice";
 import { connect, useDispatch } from "react-redux";
+import FlexView from "react-flexview";
+import { MdSkipPrevious, MdSkipNext } from "react-icons/md";
+import { BsShuffle } from "react-icons/bs";
+import { WiCloudRefresh } from "react-icons/wi";
+import { reshuffle, jumpToPrevSong, jumpToNextSong, loadPlaylist } from "Redux/components/player/playerSlice";
 
 import styles from "./player-controls.scss";
 
@@ -18,19 +22,23 @@ const PlayerControlsComponent = ({ currentSong, currentSongIndex, reshuffle, jum
         <span>Current song: </span>
         [{currentSongIndex + 1}] {currentSong.name}
       </div>
-      <div className={styles.buttons}>
-        <button onClick={jumpToPrevSong}>Previous</button>
-        <button onClick={jumpToNextSong}>Next</button>
-        <button onClick={reshuffle}>Reshuffle</button>
-        <button onClick={reloadPlaylist}>Reload list from YT</button>
-      </div>
+      <FlexView style={{ justifyContent: "space-between" }} className={styles.buttons}>
+        <div>
+          <button onClick={jumpToPrevSong}><MdSkipPrevious /></button>
+          <button onClick={jumpToNextSong}><MdSkipNext /></button>
+        </div>
+        <div>
+          <button onClick={reshuffle}><BsShuffle /></button>
+          <button onClick={reloadPlaylist}><WiCloudRefresh /></button>
+        </div>
+      </FlexView>
     </div>
   );
 };
 
 const mapStateToProps = (state, props) => {
   const { currentSong, currentSongIndex } = state.player;
-  
+
   return { currentSong, currentSongIndex };
 };
 

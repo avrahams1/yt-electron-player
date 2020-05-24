@@ -15,7 +15,16 @@
 }
 
 .buttons {
-  & > button:not(:last-child) {
+  button {
+    &:hover {
+      color: #ADEFD1FF;
+      border-bottom: 1px solid #ADEFD1FF;
+    }
+
     margin-right: 10px;
+    background-color: inherit;
+    padding: inherit;
+    font-size: 30px;
+    height: 30px;
   }
 }

@@ -1,12 +1,6 @@
 .container {
-  padding-top: 20px;
-}
-
-.content {
-  width: 60vw;
-
-  & > * {
-    display: block;
-    margin-bottom: 10px;
-  }
+  padding: 50px;
+  padding-bottom: 0;
+  min-height: 650px;
+  min-width: 1530px;
 }

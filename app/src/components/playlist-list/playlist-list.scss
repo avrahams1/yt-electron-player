@@ -1,15 +1,18 @@
-.title {
-  font-size: 1.6em;
-  font-weight: bold;
+.container {
+  width: 50vw;
 }
 
 .search-bar {
-  width: 100%;
+  width: calc(100% - 20px);
+  margin-bottom: 15px;
 }
 
 .list {
-  max-height: 45vh;
+  width: 100%;
+  max-height: calc(100vh - 150px);
   overflow-y: scroll;
+  border-left: 1px solid white;
+  padding-left: 15px;
 
   .item {
     &:not(:last-child) {
@@ -24,6 +27,7 @@
     &.selected {
       background-color: #ADEFD1FF;
       color: #00203FFF;
+      font-weight: bold;
     }
   }
 }

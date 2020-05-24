@@ -2,6 +2,8 @@ html {
   height: 100%;
   background: black;
   color: #BFBFBF;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 body {
@@ -29,4 +31,16 @@ input[type=text], textarea {
 
 #target {
   height: -webkit-fill-available;
+}
+
+*::-webkit-scrollbar {
+  width: 12px;               /* width of the entire scrollbar */
+}
+*::-webkit-scrollbar-track {
+  background: #00203FFF;        /* color of the tracking area */
+}
+*::-webkit-scrollbar-thumb {
+  background-color: #ADEFD1FF;    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  border: 3px solid black;  /* creates padding around scroll thumb */
 }

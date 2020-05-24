@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
+import FlexView from 'react-flexview';
 import { loadPlaylist } from "Redux/components/player/playerSlice";
 import PlayerVideo from "Components/player-video/player-video";
 import PlayerControls from "Components/player-controls/player-controls";
@@ -17,11 +18,15 @@ const PlayerComponent = () => {
   }, []);
 
   return (
-    <React.Fragment>
-      <PlayerVideo />
-      <PlayerControls />
-      <PlaylistList />
-    </React.Fragment>
+    <FlexView vAlignContent="center" style={{ justifyContent: "space-between" }}>
+      <FlexView column>
+        <PlayerVideo />
+        <PlayerControls />
+      </FlexView>
+      <FlexView column>
+        <PlaylistList />
+      </FlexView>
+    </FlexView>
   );
 };
 

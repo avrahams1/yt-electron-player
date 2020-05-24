@@ -14,11 +14,9 @@ class Root extends React.Component {
     return (
       <Provider store={store}>
         <ConnectedRouter history={history}>
-          <FlexView column hAlignContent="center" className={styles.container}>
-            <div className={styles.content}>
+          <div className={styles.container}>
               <Routes></Routes>
-            </div>
-          </FlexView>
+          </div>
         </ConnectedRouter>
       </Provider>
     );

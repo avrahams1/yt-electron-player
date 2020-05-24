@@ -15,7 +15,7 @@
 }
 
 .buttons {
-  & > button {
-    margin-right: 5px;
+  & > button:not(:last-child) {
+    margin-right: 10px;
   }
 }

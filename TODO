@@ -4,3 +4,4 @@
 4. Seperate playlist picker to its own slice, add logic that loads the playlist's name when its typed, make fancy list
 5. Add "remember" to playlist picker that skips it, add option to go back from player
 6. Deal with unavailable vids (https://www.youtube.com/watch?v=AURG1edsRPE)
+7. List - add padding from left, make selected item highlighted 100% of the width, instead of just the text

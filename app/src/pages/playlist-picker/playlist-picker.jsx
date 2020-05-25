@@ -1,46 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
-import { unwrapResult } from '@reduxjs/toolkit'
 import FlexView from 'react-flexview';
 import { push } from "connected-react-router";
 import ROUTES from "Constants/routes";
-import { loadPlaylistIds, saveIds } from "Redux/components/player/playerSlice";
+import { loadPlaylistIds, saveIds, setIDs } from "Redux/components/playlist-picker/playlistPickerSlice";
 
 import styles from "./playlist-picker.scss";
 
-const PlaylistPicker = ({ push }) => {
-  const [value, setValue] = useState(null);
+const PlaylistPicker = ({ playlistIDs, setPlaylistIDs, push }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadPlaylistIds()).then(result => {
-      const ids = unwrapResult(result);
-      setValue(ids.join('\n'));
-    });
+    dispatch(loadPlaylistIds());
   }, []);
 
-  if (!value) {
+  if (!playlistIDs) {
     return <div>Loading...</div>;
   }
 
   const onValueChanged = event => {
-    setValue(event.target.value);
+    setPlaylistIDs(event.target.value.split('\n').filter(str => str));
   };
 
   const onClick = () => {
-    const ids = value.split('\n').filter(str => str && str.length > 10);
-    dispatch(saveIds(ids)).then(() => {
+    dispatch(saveIds()).then(() => {
       push(ROUTES.PLAYER);
     });
   }
 
+  const playlistIDsString = playlistIDs.join("\n") + "\n";
+
   return (
     <FlexView column hAlignContent="center" className={styles.container}>
       <div>Type playlist IDs, seperated by new lines:</div>
-      <textarea rows="6" cols="50" value={value} onChange={onValueChanged}></textarea>
+      <textarea rows="6" cols="50" value={playlistIDsString} onChange={onValueChanged}></textarea>
       <button onClick={onClick}>Play these playlists</button>
     </FlexView>
   )
 }
 
-export default connect(null, { push })(PlaylistPicker);
+const mapStateToProps = (state, props) => {
+  const { playlistIDs } = state.playlistPicker;
+
+  return { playlistIDs };
+};
+
+export default connect(mapStateToProps, { push, setPlaylistIDs: setIDs })(PlaylistPicker);

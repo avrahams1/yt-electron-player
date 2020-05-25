@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from "react-redux";
-import { debounce } from "lodash";
 import { jumpToNextSong } from "Redux/components/player/playerSlice";
 
 const PlayerVideoComponent = ({ currentSong, jumpToNextSong }) => {

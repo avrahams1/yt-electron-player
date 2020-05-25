@@ -9,7 +9,7 @@ import { reshuffle, jumpToPrevSong, jumpToNextSong, loadPlaylist } from "Redux/c
 
 import styles from "./player-controls.scss";
 
-const PlayerControlsComponent = ({ currentSong, currentSongIndex, reshuffle, jumpToPrevSong, jumpToNextSong }) => {
+const PlayerControlsComponent = ({ currentSong, currentSongIndex, list, reshuffle, jumpToPrevSong, jumpToNextSong }) => {
   const dispatch = useDispatch();
   const reloadPlaylist = () => dispatch(loadPlaylist(true));
 
@@ -17,11 +17,13 @@ const PlayerControlsComponent = ({ currentSong, currentSongIndex, reshuffle, jum
     return <div>Loading...</div>;
   }
 
+  const positionInList = `${currentSongIndex + 1} / ${list.length}`;
+
   return (
     <div className={styles.container}>
-      <div className={styles.text}>
-        <span>Current song: </span>
-        [{currentSongIndex + 1}] {currentSong.name}
+      <div className={styles.titleContainer}>
+        <span className={styles.placeInList}>[{positionInList}]</span>
+        <span className={styles.title}>{currentSong.name}</span>
       </div>
       <FlexView style={{ justifyContent: "space-between" }} className={styles.buttons}>
         <FlexView>
@@ -38,9 +40,9 @@ const PlayerControlsComponent = ({ currentSong, currentSongIndex, reshuffle, jum
 };
 
 const mapStateToProps = (state, props) => {
-  const { currentSong, currentSongIndex } = state.player;
+  const { currentSong, currentSongIndex, list } = state.player;
 
-  return { currentSong, currentSongIndex };
+  return { currentSong, currentSongIndex, list };
 };
 
 const mapDispatch = { reshuffle, jumpToPrevSong, jumpToNextSong };

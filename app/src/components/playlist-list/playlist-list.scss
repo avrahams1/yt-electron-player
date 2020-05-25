@@ -12,19 +12,22 @@
   padding-left: 15px;
 
   .item {
+    width: 100%;
+
     &:not(:last-child) {
       margin-bottom: 20px;
+    }
+
+    &.selected {
+      background-color: #ADEFD1FF;
+      color: #00203FFF;
+      font-weight: bold;
     }
 
     a {
       &:visited, &:hover, &:active {
         color: inherit;
       }
-    }
-    &.selected {
-      background-color: #ADEFD1FF;
-      color: #00203FFF;
-      font-weight: bold;
     }
   }
 }

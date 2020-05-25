@@ -66,7 +66,8 @@ function onYouTubeIframeAPIReady(setYtPlayer, playerReady, jumpToNextSong) {
       },
       events: {
         onReady: playerReady,
-        onStateChange: onPlayerStateChange(jumpToNextSong)
+        onStateChange: onPlayerStateChange(jumpToNextSong),
+        onError: jumpToNextSong
       }
     });
 

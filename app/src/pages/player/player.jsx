@@ -21,7 +21,7 @@ const PlayerComponent = () => {
 
   return (
     <FlexView vAlignContent="center" style={{ justifyContent: "space-between" }}>
-      <FlexView column className={styles.playerContainer}>
+      <FlexView grow marginRight="50px" column>
         <PlayerVideo />
         <PlayerControls />
       </FlexView>

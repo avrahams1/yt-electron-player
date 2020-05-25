@@ -22,7 +22,7 @@ const PlayerVideoComponent = ({ currentSong, jumpToNextSong }) => {
     }
 
     resizeYTPlayer(ytPlayer);
-    window.onresize = debounce(() => resizeYTPlayer(ytPlayer), 200)
+    window.onresize = () => resizeYTPlayer(ytPlayer);
 
     return () => {
       window.onresize = undefined;
@@ -35,11 +35,12 @@ const PlayerVideoComponent = ({ currentSong, jumpToNextSong }) => {
 };
 
 function resizeYTPlayer(ytPlayer) {
-  const ratio = 39.0/64.0;
+  const ratio = 39/64;
+  const minHeightRatio = 652/771;
   const parent = document.getElementById("ytplayer").parentElement;
   const { clientWidth: newWidth } = parent;
 
-  const newHeight = newWidth * ratio;
+  const newHeight = Math.min(newWidth * ratio, window.innerHeight * minHeightRatio);
 
   ytPlayer.setSize(newWidth, newHeight);
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDom from "react-dom";
 import { connect } from "react-redux";
 import { debounce } from "lodash";
+import { MdPlaylistPlay } from "react-icons/md";
 import classNames from "classnames";
 import FlexView from 'react-flexview';
 import { setNewSongIndex } from "Redux/components/player/playerSlice";
@@ -13,14 +14,23 @@ class PlaylistList extends React.Component {
     super(props);
 
     this.onSearchTermChangedDebounced = debounce(query => this.setState({ currentSearchTerm: query }), 700);
+    this.toggleFolded = this.toggleFolded.bind(this);
 
     this.state = {
+      isFolded: false,
       displaySearchTerm: "",
       currentSearchTerm: ""
     };
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (this.state.isFolded !== prevState.isFolded) {
+      // Resize is retarded :(
+      for (let i = 0; i < 10; i++) {
+        window.dispatchEvent(new Event('resize'));
+      }
+    }
+
     if (this.props.currentSong === prevProps.currentSong &&
         this.state.currentSearchTerm === prevState.currentSearchTerm) {
       return;
@@ -40,6 +50,10 @@ class PlaylistList extends React.Component {
     const { value } = event.target;
     this.setState({ displaySearchTerm: value });
     this.onSearchTermChangedDebounced(value);
+  }
+
+  toggleFolded() {
+    this.setState(({ isFolded }) => ({ isFolded: !isFolded }));
   }
 
   renderListItem({ item, index }) {
@@ -70,7 +84,7 @@ class PlaylistList extends React.Component {
 
   render() {
     const { currentSong, list } = this.props;
-    const { currentSearchTerm, displaySearchTerm } = this.state;
+    const { currentSearchTerm, displaySearchTerm, isFolded } = this.state;
 
     if (!currentSong) {
       return <div>Loading...</div>;
@@ -95,8 +109,13 @@ class PlaylistList extends React.Component {
       }
     }
 
+    const containerClasses = classNames(styles.container, {
+      [styles.folded]: isFolded
+    });
+
     return (
-      <FlexView column hAlignContent="left">
+      <FlexView className={containerClasses} column hAlignContent="left">
+        <MdPlaylistPlay className={styles.foldButton} onClick={this.toggleFolded} />
         <input type="text" placeholder="Search" className={styles.searchBar} value={displaySearchTerm} onChange={this.onSearchTermChanged.bind(this)} />
         <FlexView column hAlignContent="left" className={styles.list}>
           {filteredList.map(this.renderListItem.bind(this))}

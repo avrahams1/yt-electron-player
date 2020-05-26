@@ -16,9 +16,7 @@ const PlayerVideoComponent = ({ currentSong, jumpToNextSong }) => {
   }, [currentSong, isPlayerReady, ytPlayer])
 
   useEffect(() => {
-    if (!ytPlayer) {
-      return;
-    }
+    if (!currentSong || !isPlayerReady || !ytPlayer) return;
 
     resizeYTPlayer(ytPlayer);
     window.onresize = () => resizeYTPlayer(ytPlayer);
@@ -26,7 +24,7 @@ const PlayerVideoComponent = ({ currentSong, jumpToNextSong }) => {
     return () => {
       window.onresize = undefined;
     };
-  }, [ytPlayer])
+  }, [ytPlayer, isPlayerReady, currentSong])
 
   return (
     <div id="ytplayer" />

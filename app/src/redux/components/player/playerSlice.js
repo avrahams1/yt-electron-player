@@ -61,7 +61,7 @@ const playerSlice = createSlice({
 })
 
 function loadPlaylistFromMemory(playlistId) {
-  return readValue(PLAYLIST_ITEMS_PROP(playlistId));
+  return readValue(PLAYLIST_ITEMS_PROP(playlistId), false);
 }
 
 function loadPlaylistFromAPI(listId) {

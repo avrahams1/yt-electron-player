@@ -1,5 +1,7 @@
-import { PLAYLIST_IDS_PROP, readValue, writeValue } from "../../utils/reduxStoreUtils";
+import { REMEMBER_PLAYLIST, PLAYLIST_IDS_PROP, readValue, writeValue } from "../../utils/reduxStoreUtils";
+import { replace } from "connected-react-router";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import ROUTES from "Constants/routes";
 
 export const loadPlaylistIds = createAsyncThunk(
   "playlists/get",
@@ -28,12 +30,32 @@ const playlistPickerSlice = createSlice({
   }
 });
 
-function getPlaylistIds() {
-  return readValue(PLAYLIST_IDS_PROP).catch(() => (["PL8wFHI7-y_0w4AShZqurXcJIayFB9_jCa"]));
+function getPlaylistIds(noAutoSkip, { dispatch }) {
+  const basePromise = noAutoSkip ? Promise.reject() : readValue(REMEMBER_PLAYLIST)
+  .then(value => {
+    if (value) {
+      goToPlayerRoute(dispatch);
+      return false;
+    }
+
+    return Promise.reject();
+  });
+
+  return basePromise
+    .catch(() => {
+      return readValue(PLAYLIST_IDS_PROP).catch(() => (["PL8wFHI7-y_0w4AShZqurXcJIayFB9_jCa"]));
+    });
 }
 
-function savePlaylistIds(_, { getState }) {
-  return writeValue(PLAYLIST_IDS_PROP, getState().playlistIDs);
+function savePlaylistIds(rememberChoice, { getState, dispatch }) {
+  const basePromise = rememberChoice ? writeValue(REMEMBER_PLAYLIST, true) : Promise.resolve();
+  return basePromise.then(() => 
+      writeValue(PLAYLIST_IDS_PROP, getState().playlistIDs)
+      .then(() => goToPlayerRoute(dispatch)));
+}
+
+function goToPlayerRoute(dispatch) {
+  dispatch(replace(ROUTES.PLAYER));
 }
 
 export const { setIDs } = playlistPickerSlice.actions

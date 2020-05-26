@@ -1,7 +1,6 @@
 import React from "react";
 import { ConnectedRouter } from "connected-react-router";
 import { Provider } from "react-redux";
-import FlexView from 'react-flexview';
 import Routes from "Core/routes";
 
 import styles from "./root.scss";

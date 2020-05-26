@@ -1,6 +1,7 @@
 import { readConfigRequest, readConfigResponse, writeConfigRequest, writeConfigResponse } from "secure-electron-store";
 
 export const PLAYLIST_IDS_PROP = "playlistIds";
+export const REMEMBER_PLAYLIST = "rememberPlaylistsSelection";
 export const PLAYLIST_ITEMS_PROP = playlistId => `playlist-${playlistId}`;
 
 export function writeValue(propName, value) {
@@ -18,7 +19,9 @@ export function readValue(propName, clearBindings = true) {
     clearBindings,
     additionalParams: [propName]
   }).then(args => {
-    if (args.success && args.value) {
+    const { key, success, value } = args;
+
+    if (key === propName && success && value) {
       return args.value;
     }
 

@@ -1,9 +1,11 @@
 import React from 'react'
 import { connect, useDispatch } from "react-redux";
+import { replace } from "connected-react-router";
+import ROUTES from "Constants/routes";
 import FlexView from "react-flexview";
 import Tooltip from "react-tooltip-lite";
 import { MdSkipPrevious, MdSkipNext } from "react-icons/md";
-import { BsShuffle } from "react-icons/bs";
+import { BsShuffle, BsMusicNoteList } from "react-icons/bs";
 import { WiCloudRefresh } from "react-icons/wi";
 import { reshuffle, jumpToPrevSong, jumpToNextSong, loadPlaylist } from "Redux/components/player/playerSlice";
 
@@ -16,6 +18,13 @@ const PlayerControlsComponent = ({ currentSong, currentSongIndex, list, reshuffl
   if (!currentSong) {
     return <div>Loading...</div>;
   }
+
+  const backToMainScreen = () => {
+    dispatch(replace({
+      pathname: ROUTES.MAIN,
+      state: { noAutoSkip: true }
+    }));
+  };
 
   const positionInList = `${currentSongIndex + 1} / ${list.length}`;
 
@@ -31,6 +40,7 @@ const PlayerControlsComponent = ({ currentSong, currentSongIndex, list, reshuffl
           <button onClick={jumpToNextSong}><MdSkipNext /></button>
         </FlexView>
         <FlexView>
+          <Tooltip content="Back to playlist selection screen" direction="left" background="black" color="white"><button onClick={backToMainScreen}><BsMusicNoteList /></button></Tooltip>
           <Tooltip content="Reshuffle playlist" direction="left" background="black" color="white"><button onClick={reshuffle}><BsShuffle /></button></Tooltip>
           <Tooltip content="Reload playlist from YT" direction="right" background="black" color="white"><button onClick={reloadPlaylist}><WiCloudRefresh /></button></Tooltip>
         </FlexView>

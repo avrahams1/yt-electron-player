@@ -1,6 +1,6 @@
 .container {
+  width: 26vw;
   position: relative;
-  transition: width 10s;
 
   &.folded {
     width: 0;

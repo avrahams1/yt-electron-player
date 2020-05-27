@@ -25,7 +25,7 @@ const PlayerComponent = () => {
         <PlayerVideo />
         <PlayerControls />
       </FlexView>
-      <FlexView column className={styles.listContainer}>
+      <FlexView shrink column>
         <PlaylistList />
       </FlexView>
     </FlexView>

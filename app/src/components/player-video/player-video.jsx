@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from "react-redux";
 import { jumpToNextSong } from "Redux/components/player/playerSlice";
+import addIframeAPIScriptTag from "./addIframeScriptTag";
 
 const PlayerVideoComponent = ({ currentSong, jumpToNextSong }) => {
   const [ytPlayer, setYtPlayer] = useState(null);
@@ -43,13 +44,8 @@ function resizeYTPlayer(ytPlayer) {
 }
 
 function initYTPlayer(setYtPlayer, playerReady, jumpToNextSong) {
-  const tag = document.createElement('script');
-
-  tag.src = "https://www.youtube.com/iframe_api";
-  const firstScriptTag = document.getElementsByTagName('script')[0];
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-  window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady(setYtPlayer, playerReady, jumpToNextSong);
+  const onYTAPILoaded = onYouTubeIframeAPIReady(setYtPlayer, playerReady, jumpToNextSong);
+  addIframeAPIScriptTag(onYTAPILoaded);
 }
 
 function onYouTubeIframeAPIReady(setYtPlayer, playerReady, jumpToNextSong) {

@@ -48,8 +48,7 @@ function getPlaylistIds(noAutoSkip, { dispatch }) {
 }
 
 function savePlaylistIds(rememberChoice, { getState, dispatch }) {
-  const basePromise = rememberChoice ? writeValue(REMEMBER_PLAYLIST, true) : Promise.resolve();
-  return basePromise.then(() => 
+  return writeValue(REMEMBER_PLAYLIST, rememberChoice).then(() => 
       writeValue(PLAYLIST_IDS_PROP, getState().playlistIDs)
       .then(() => goToPlayerRoute(dispatch)));
 }

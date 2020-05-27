@@ -6,7 +6,8 @@ module.exports = isDev => ({
   entry: ["./app/src/index.jsx"], // The entry point of our app; these entry points can be named and we can also have multiple if we'd like to split the webpack bundle into smaller files to improve script loading speed between multiple pages of our app
   output: {
     path: path.resolve(__dirname, "app/dist"), // Where all the output files get dropped after webpack is done with them
-    filename: "bundle.js" // The name of the webpack bundle that's generated
+    filename: "bundle.js", // The name of the webpack bundle that's generated
+    chunkFilename: '[name].js',
   },
   module: {
     rules: [
@@ -93,5 +94,38 @@ module.exports = isDev => ({
         use: "url-loader"
       }
     ]
-  }
+  },
+  optimization: {
+    splitChunks: {
+        cacheGroups: {
+            default: false,
+            vendors: false,
+
+            // vendor chunk
+            vendor: {
+                // name of the chunk
+                name: 'vendor',
+
+                // async + async chunks
+                chunks: 'all',
+
+                // import file path containing node_modules
+                test: /node_modules/,
+
+                // priority
+                priority: 20
+            },
+
+            // common chunk
+            common: {
+                name: 'common',
+                minChunks: 2,
+                chunks: 'all',
+                priority: 10,
+                reuseExistingChunk: true,
+                enforce: true
+            }
+        }
+    }
+}
 });

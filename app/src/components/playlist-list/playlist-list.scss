@@ -44,12 +44,14 @@
   overflow-x: hidden;
   border-left: 1px solid white;
   padding-left: 15px;
+  padding-right: 5px;
 
   .item {
     width: 100%;
+    padding: 20px;
 
     &:not(:last-child) {
-      margin-bottom: 20px;
+      margin-bottom: 1px;
     }
 
     &.selected {
@@ -58,10 +60,10 @@
       font-weight: bold;
     }
 
-    a {
-      &:visited, &:hover, &:active {
-        color: inherit;
-      }
+    &:hover:not(.selected) {
+      background-color: #ADEFD1FF;
+      color: #00203FFF;
+      cursor: pointer;
     }
   }
 }

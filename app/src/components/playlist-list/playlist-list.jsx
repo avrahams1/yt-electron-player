@@ -75,9 +75,9 @@ class PlaylistList extends React.Component {
     };
 
     return (
-      <div className={classes} {...extraProps} key={item.id}>
-        <span className={styles.number}>{index + 1} - </span>
-        <a href="" onClick={onClick}>{item.name}</a>
+      <div className={classes} {...extraProps} key={item.id} onClick={onClick}>
+        <span>{index + 1} - </span>
+        <span>{item.name}</span>
       </div>
     )
   }

@@ -66,8 +66,6 @@ function onYouTubeIframeAPIReady(setYtPlayer, playerReady, jumpToNextSong) {
       }
     });
 
-    window.onYouTubeIframeAPIReady = undefined;
-
     setYtPlayer(ytPlayer);
   };
 }

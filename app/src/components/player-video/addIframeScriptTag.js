@@ -12,7 +12,10 @@ export default (loadYTPlayer) => {
     const firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-    window.onYouTubeIframeAPIReady = loadYTPlayer;
+    window.onYouTubeIframeAPIReady = () => {
+        loadYTPlayer();
+        window.onYouTubeIframeAPIReady = undefined;
+    };
 
     didAddScriptTag = true;
 }

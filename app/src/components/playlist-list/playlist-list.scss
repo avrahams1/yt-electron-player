@@ -5,7 +5,6 @@
 
   *:not(.foldButton) {
     transition: opacity 0.5s ease;
-    // opacity: 1;
   }
 
   &.folded {

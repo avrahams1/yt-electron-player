@@ -20,10 +20,12 @@ const PlayerVideoComponent = ({ currentSong, jumpToNextSong }) => {
     if (!currentSong || !isPlayerReady || !ytPlayer) return;
 
     resizeYTPlayer(ytPlayer);
-    window.onresize = () => resizeYTPlayer(ytPlayer);
+
+    const onResize = () => resizeYTPlayer(ytPlayer);
+    window.addEventListener("resize", onResize);
 
     return () => {
-      window.onresize = undefined;
+      window.removeEventListener("resize", onResize);
     };
   }, [ytPlayer, isPlayerReady, currentSong])
 

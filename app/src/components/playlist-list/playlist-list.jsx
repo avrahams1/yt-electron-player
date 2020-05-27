@@ -25,10 +25,7 @@ class PlaylistList extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.isFolded !== prevState.isFolded) {
-      // Resize is retarded :(
-      for (let i = 0; i < 10; i++) {
-        window.dispatchEvent(new Event('resize'));
-      }
+      this.triggerResizeOnFoldChange();
     }
 
     if (this.props.currentSong === prevProps.currentSong &&
@@ -44,6 +41,19 @@ class PlaylistList extends React.Component {
 
     const domElement = ReactDom.findDOMNode(itemComponent);
     domElement.scrollIntoView(true);
+  }
+
+  triggerResizeOnFoldChange() {
+    const resize = () => {
+      for (let i = 0; i < 10; i++) {
+        window.dispatchEvent(new Event('resize'));
+      }
+    };
+
+    const intervals = 50;
+    for (let i = intervals; i <= 500; i += intervals) {
+      setTimeout(resize, i);
+    }
   }
 
   onSearchTermChanged(event) {

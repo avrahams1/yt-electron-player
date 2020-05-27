@@ -1,6 +1,12 @@
 .container {
   width: 26vw;
   position: relative;
+  transition: width 0.5s ease;
+
+  *:not(.foldButton) {
+    transition: opacity 0.5s ease;
+    // opacity: 1;
+  }
 
   &.folded {
     width: 0;

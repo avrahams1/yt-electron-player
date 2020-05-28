@@ -28,6 +28,14 @@ button {
   &:hover {
     cursor: pointer;
   }
+
+  &[disabled] {
+    opacity: 0.3;
+
+    &:hover {
+      cursor: not-allowed;
+    }
+  }
 }
 
 input[type=text], textarea {

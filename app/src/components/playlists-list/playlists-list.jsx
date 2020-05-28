@@ -35,7 +35,7 @@ const PlaylistsList = ({ playlistIDs, playlistDetails, addPlaylistId, removePlay
 
     const addNew = () => {
         setIsAddingNew(false);
-        
+
         if (newPlaylistId) {
             addPlaylistId(newPlaylistId);
         }
@@ -78,20 +78,23 @@ function renderNewItem(focusCallback, newPlaylistId, setNewPlaylistId, addNew) {
 
 function createListItem(playlistDetails, removePlaylistID) {
     return playlistId => {
-        let playlistDetailsRendering;
-        if (playlistDetails[playlistId]) {
-            const { title, itemCount } = playlistDetails[playlistId];
-            playlistDetailsRendering = <span>{title} ({itemCount})</span>;
-        } else {
-            playlistDetailsRendering = <FaSpinner className={styles.spinner} />;
-        }
+        const currPlaylistDetails = playlistDetails[playlistId];
+
+        const playlistDetailsRender = currPlaylistDetails ? 
+            <span>
+                {currPlaylistDetails.title} with {currPlaylistDetails.itemCount} items
+            </span> : <span>
+                {playlistId}
+                <FaSpinner className={styles.spinner} />
+            </span>;
 
         return (
-            <FlexView key={playlistId} className={styles.item} style={{ justifyContent: "space-between" }}>
-                <div>{playlistId}</div>
-                <div>{playlistDetailsRendering}</div>
-                <button onClick={() => removePlaylistID(playlistId)} className={styles.remove}><FiMinusCircle /></button>
-            </FlexView>
+            <React.Fragment key={playlistId}>
+                <FlexView className={styles.item} style={{ justifyContent: "space-between" }}>
+                    <div>{playlistDetailsRender}</div>
+                    <button onClick={() => removePlaylistID(playlistId)} className={styles.remove}><FiMinusCircle /></button>
+                </FlexView>
+            </React.Fragment>
         );
     };
 }

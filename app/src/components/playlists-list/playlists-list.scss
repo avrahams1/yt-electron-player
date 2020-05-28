@@ -6,7 +6,6 @@
     overflow-y: auto;
 
     button {
-        margin-right: 10px;
         background-color: inherit;
         padding: inherit;
 
@@ -31,16 +30,20 @@
 .item {
     width: 100%;
 
-    &:not(:last-child) {
-        margin-bottom: 10px;
+    &.tableHeaders {
+        border-bottom: 1px solid white;
+        font-weight: bold;
     }
 
-    & > *:not(:last-child) {
-        margin-right: 10px;
+    &:not(:last-child) {
+        margin-bottom: 10px;
     }
 }
 
 .remove {
+    margin-left: 10px;
+    font-size: 20px;
+    
     &:hover {
         margin-bottom: -1px;
     }

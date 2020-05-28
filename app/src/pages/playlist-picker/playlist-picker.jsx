@@ -35,7 +35,7 @@ const PlaylistPicker = ({ playlistIDs, noAutoSkip }) => {
         <input name="rememberChoices" type="checkbox" checked={rememberChoice} onChange={onRememberChanged} />
         <label htmlFor="rememberChoices">Remember this choice?</label>
       </div>
-      <button onClick={onClick}>Play these playlists</button>
+      <button onClick={onClick} disabled={playlistIDs.length === 0}>Play these playlists</button>
     </FlexView>
   )
 }

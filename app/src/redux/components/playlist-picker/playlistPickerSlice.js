@@ -1,7 +1,7 @@
 import { REMEMBER_PLAYLIST, PLAYLIST_IDS_PROP, readValue, writeValue } from "../../utils/reduxStoreUtils";
 import { replace } from "connected-react-router";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { merge, remove } from "lodash";
+import { merge, remove, random } from "lodash";
 import { loadPlaylistDetails } from "../../utils/googleApiUtils";
 import ROUTES from "Constants/routes";
 
@@ -46,14 +46,14 @@ const playlistPickerSlice = createSlice({
 
 function getPlaylistIds(noAutoSkip, { dispatch }) {
   const basePromise = noAutoSkip ? Promise.reject() : readValue(REMEMBER_PLAYLIST)
-  .then(value => {
-    if (value) {
-      goToPlayerRoute(dispatch);
-      return false;
-    }
+    .then(value => {
+      if (value) {
+        goToPlayerRoute(dispatch);
+        return false;
+      }
 
-    return Promise.reject();
-  });
+      return Promise.reject();
+    });
 
   return basePromise
     .catch(() => {
@@ -62,17 +62,36 @@ function getPlaylistIds(noAutoSkip, { dispatch }) {
 }
 
 function savePlaylistIds(rememberChoice, { getState, dispatch }) {
-  return writeValue(REMEMBER_PLAYLIST, rememberChoice).then(() => 
-      writeValue(PLAYLIST_IDS_PROP, getState().playlistIDs)
-      .then(() => goToPlayerRoute(dispatch)));
+  const { playlistPicker: { playlistIDs } } = getState();
+
+  return writeValue(REMEMBER_PLAYLIST, rememberChoice).then(() =>
+    writeValue(PLAYLIST_IDS_PROP, playlistIDs)
+  ).then(() => goToPlayerRoute(dispatch));
 }
 
 function loadPlaylistsDetails(_, { getState }) {
-  const { playlistPicker: { playlistIDs, playlistDetails }} = getState();
+  const { playlistPicker: { playlistIDs, playlistDetails } } = getState();
 
   const idsToLoad = playlistIDs.filter(id => !playlistDetails[id]);
 
   if (idsToLoad.length === 0) return Promise.resolve([]);
+
+  /*
+  return new Promise(resolve => {
+    setTimeout(() => {
+      let dict = {};
+
+      idsToLoad.forEach(id => {
+        dict[id] = {
+          title: id + " playlist",
+          itemCount: random(1, 100)
+        };
+      });
+
+      resolve(dict);
+    }, random(500, 2500));
+  });
+  */
 
   const promises = idsToLoad
     .map(id => {
@@ -88,16 +107,16 @@ function loadPlaylistsDetails(_, { getState }) {
         });
     });
 
-    return Promise.all(promises).then(resultsArr => {
-      let dict = {};
+  return Promise.all(promises).then(resultsArr => {
+    let dict = {};
 
-      resultsArr.forEach(result => {
-        const { id, title, itemCount } = result;
-        dict[id] = { title, itemCount };
-      })
+    resultsArr.forEach(result => {
+      const { id, title, itemCount } = result;
+      dict[id] = { title, itemCount };
+    })
 
-      return dict;
-    });
+    return dict;
+  });
 }
 
 function goToPlayerRoute(dispatch) {

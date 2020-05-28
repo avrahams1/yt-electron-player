@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { connect, useDispatch } from "react-redux";
 import { get } from "lodash";
 import FlexView from 'react-flexview';
-import { loadPlaylistIds, saveIds, setIDs } from "Redux/components/playlist-picker/playlistPickerSlice";
+import { loadPlaylistIds, saveIds } from "Redux/components/playlist-picker/playlistPickerSlice";
+import PlaylistList from "Components/playlists-list/playlists-list";
 
 import styles from "./playlist-picker.scss";
 
-const PlaylistPicker = ({ playlistIDs, noAutoSkip, setPlaylistIDs }) => {
+const PlaylistPicker = ({ playlistIDs, noAutoSkip }) => {
   const [rememberChoice, setRememberChoice] = useState(true);
   const dispatch = useDispatch();
 
@@ -18,11 +19,7 @@ const PlaylistPicker = ({ playlistIDs, noAutoSkip, setPlaylistIDs }) => {
     return <div>Loading...</div>;
   }
 
-  const onValueChanged = event => {
-    setPlaylistIDs(event.target.value.split('\n').filter(str => str));
-  };
-
-  const onInputChange = event => {
+  const onRememberChanged = event => {
     setRememberChoice(event.target.checked);
   }
 
@@ -30,14 +27,12 @@ const PlaylistPicker = ({ playlistIDs, noAutoSkip, setPlaylistIDs }) => {
     dispatch(saveIds(rememberChoice));
   }
 
-  const playlistIDsString = playlistIDs.join("\n") + "\n";
-
   return (
     <FlexView column hAlignContent="center" className={styles.container}>
       <div>Type playlist IDs, seperated by new lines:</div>
-      <textarea rows="6" cols="50" value={playlistIDsString} onChange={onValueChanged}></textarea>
+      <PlaylistList />
       <div>
-        <input name="rememberChoices" type="checkbox" checked={rememberChoice} onChange={onInputChange} />
+        <input name="rememberChoices" type="checkbox" checked={rememberChoice} onChange={onRememberChanged} />
         <label htmlFor="rememberChoices">Remember this choice?</label>
       </div>
       <button onClick={onClick}>Play these playlists</button>
@@ -52,4 +47,4 @@ const mapStateToProps = (state, props) => {
   return { playlistIDs, noAutoSkip };
 };
 
-export default connect(mapStateToProps, { setPlaylistIDs: setIDs })(PlaylistPicker);
+export default connect(mapStateToProps, null)(PlaylistPicker);

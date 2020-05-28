@@ -1,0 +1,53 @@
+.container {
+    padding: 10px;
+    width: 50vw;
+    border-left: 1px solid white;
+    max-height: 50vh;
+    overflow-y: auto;
+
+    button {
+        margin-right: 10px;
+        background-color: inherit;
+        padding: inherit;
+
+        &:hover {
+            color: #ADEFD1FF;
+            border-bottom: 1px solid #ADEFD1FF;
+        }
+    
+        &:focus {
+            outline: none;
+        }
+    }
+}
+
+.add-button {
+    position: fixed;
+    left: calc(100% - 90px);
+    top: 30px;
+    font-size: 30px;
+}
+
+.item {
+    width: 100%;
+
+    &:not(:last-child) {
+        margin-bottom: 10px;
+    }
+
+    & > *:not(:last-child) {
+        margin-right: 10px;
+    }
+}
+
+.remove {
+    &:hover {
+        margin-bottom: -1px;
+    }
+}
+
+.spinner {
+    animation:spin 4s linear infinite;
+}
+
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }

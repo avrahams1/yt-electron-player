@@ -1,8 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { PLAYLIST_IDS_PROP, PLAYLIST_ITEMS_PROP, readValue, writeValue } from "../../utils/reduxStoreUtils";
-import axios from "axios";
-
-const googleApiToken = "AIzaSyCu5KvidzCYLOY6mP0j9fXVCltfFuvkeGM";
+import { loadPlaylistChunkApi } from "../../utils/googleApiUtils";
 
 export const loadPlaylist = createAsyncThunk(
   "playlist/get",
@@ -82,8 +80,8 @@ function loadPlaylistFromAPI(listId) {
 }
 
 function loadPlaylistChunk({ playlistId, resolve, pageToken = "", prevItems = [] }) {
-  axios.get(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${playlistId}&key=${googleApiToken}&pageToken=${pageToken}`).then(response => {
-    const { data: { nextPageToken, items: currItems } } = response;
+  loadPlaylistChunkApi(playlistId, pageToken).then(response => {
+    const { nextPageToken, items: currItems } = response;
 
     let currItemsMapped = currItems.map(item => ({ name: item.snippet.title, id: item.snippet.resourceId.videoId }));
     let totalItems = [...prevItems, ...currItemsMapped];

@@ -1,6 +1,8 @@
 import { REMEMBER_PLAYLIST, PLAYLIST_IDS_PROP, readValue, writeValue } from "../../utils/reduxStoreUtils";
 import { replace } from "connected-react-router";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { merge, remove } from "lodash";
+import { loadPlaylistDetails } from "../../utils/googleApiUtils";
 import ROUTES from "Constants/routes";
 
 export const loadPlaylistIds = createAsyncThunk(
@@ -13,19 +15,31 @@ export const saveIds = createAsyncThunk(
   savePlaylistIds
 )
 
+export const loadDetails = createAsyncThunk(
+  "playlists/loadDetails",
+  loadPlaylistsDetails
+)
+
 const playlistPickerSlice = createSlice({
   name: "playlistsPicker",
   initialState: {
-    playlistIDs: null
+    playlistIDs: null,
+    playlistDetails: {}
   },
   reducers: {
-    setIDs(state, action) {
-      state.playlistIDs = action.payload;
+    addPlaylistId(state, action) {
+      state.playlistIDs.push(action.payload);
+    },
+    removePlaylistID(state, action) {
+      remove(state.playlistIDs, id => id === action.payload);
     }
   },
   extraReducers: {
     [loadPlaylistIds.fulfilled]: (state, action) => {
       state.playlistIDs = action.payload;
+    },
+    [loadDetails.fulfilled]: (state, action) => {
+      merge(state.playlistDetails, action.payload);
     }
   }
 });
@@ -53,10 +67,43 @@ function savePlaylistIds(rememberChoice, { getState, dispatch }) {
       .then(() => goToPlayerRoute(dispatch)));
 }
 
+function loadPlaylistsDetails(_, { getState }) {
+  const { playlistPicker: { playlistIDs, playlistDetails }} = getState();
+
+  const idsToLoad = playlistIDs.filter(id => !playlistDetails[id]);
+
+  if (idsToLoad.length === 0) return Promise.resolve([]);
+
+  const promises = idsToLoad
+    .map(id => {
+      return loadPlaylistDetails(id)
+        .then(details => {
+          const { snippet: { title }, contentDetails: { itemCount } } = details.items[0];
+
+          return {
+            id,
+            title,
+            itemCount
+          };
+        });
+    });
+
+    return Promise.all(promises).then(resultsArr => {
+      let dict = {};
+
+      resultsArr.forEach(result => {
+        const { id, title, itemCount } = result;
+        dict[id] = { title, itemCount };
+      })
+
+      return dict;
+    });
+}
+
 function goToPlayerRoute(dispatch) {
   dispatch(replace(ROUTES.PLAYER));
 }
 
-export const { setIDs } = playlistPickerSlice.actions
+export const { addPlaylistId, removePlaylistID } = playlistPickerSlice.actions
 
 export default playlistPickerSlice.reducer;

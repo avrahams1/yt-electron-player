@@ -1,13 +1,11 @@
 import React from 'react'
 import { connect, useDispatch } from "react-redux";
-import { replace } from "connected-react-router";
-import ROUTES from "Constants/routes";
 import FlexView from "react-flexview";
 import { MdSkipPrevious, MdSkipNext } from "react-icons/md";
 import { BsShuffle, BsMusicNoteList } from "react-icons/bs";
 import { WiCloudRefresh } from "react-icons/wi";
 import Tooltip from "Components/tooltip/tooltip"
-import { reshuffle, jumpToPrevSong, jumpToNextSong, loadPlaylist } from "Redux/components/player/playerSlice";
+import { reshuffle, jumpToPrevSong, jumpToNextSong, loadPlaylist, goBackToSelectionScreen } from "Redux/components/player/playerSlice";
 
 import styles from "./player-controls.scss";
 
@@ -20,10 +18,7 @@ const PlayerControlsComponent = ({ currentSong, currentSongIndex, list, reshuffl
   }
 
   const backToMainScreen = () => {
-    dispatch(replace({
-      pathname: ROUTES.MAIN,
-      state: { noAutoSkip: true }
-    }));
+    dispatch(goBackToSelectionScreen());
   };
 
   const positionInList = `${currentSongIndex + 1} / ${list.length}`;

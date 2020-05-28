@@ -1,8 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { replace } from "connected-react-router";
 import { PLAYLIST_IDS_PROP, PLAYLIST_ITEMS_PROP, readValue, writeValue } from "../../utils/reduxStoreUtils";
 import { loadPlaylistChunkApi } from "../../utils/googleApiUtils";
 import { random } from "lodash";
 import { useMocks } from "Core/config";
+import ROUTES from "Constants/routes";
 
 export const loadPlaylist = createAsyncThunk(
   "playlist/get",
@@ -27,6 +29,16 @@ export const loadPlaylist = createAsyncThunk(
         return Object.values(dict);
       })
       .then(shuffle);
+  }
+)
+
+export const goBackToSelectionScreen = createAsyncThunk(
+  "playlist/back-to-selection",
+  (_, { dispatch }) => {
+    dispatch(replace({
+      pathname: ROUTES.MAIN,
+      state: { noAutoSkip: true }
+    }));
   }
 )
 
@@ -56,6 +68,11 @@ const playerSlice = createSlice({
     [loadPlaylist.fulfilled]: (state, action) => {
       state.list = action.payload;
       setCurrentIndex(state, 0);
+    },
+    [goBackToSelectionScreen.fulfilled]: (state, action) => {
+      state.list = null;
+      state.currentSong = null;
+      state.currentSongIndex = null;
     }
   }
 })

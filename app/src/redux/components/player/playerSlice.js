@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { PLAYLIST_IDS_PROP, PLAYLIST_ITEMS_PROP, readValue, writeValue } from "../../utils/reduxStoreUtils";
 import { loadPlaylistChunkApi } from "../../utils/googleApiUtils";
+import { random } from "lodash";
+import { useMocks } from "Core/config";
 
 export const loadPlaylist = createAsyncThunk(
   "playlist/get",
@@ -63,16 +65,23 @@ function loadPlaylistFromMemory(playlistId) {
 }
 
 function loadPlaylistFromAPI(listId) {
-  // return Promise.resolve([
-  //   {
-  //     id: "RiFdyPOe3MA" + listId,
-  //     name: "TANKS!" + listId
-  //   },
-  //   {
-  //     id: "pKBRx2UYaxM" + listId,
-  //     name: "IMAGINE MY SHOCK" + listId
-  //   }
-  // ]);
+  if (useMocks) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve([
+          {
+            id: "RiFdyPOe3MA" + listId,
+            name: "TANKS!" + listId
+          },
+          {
+            id: "pKBRx2UYaxM" + listId,
+            name: "IMAGINE MY SHOCK" + listId
+          }
+        ]);
+      }, random(500, 2500));
+    });
+  }
+
   return new Promise(resolve => loadPlaylistChunk({ playlistId: listId, resolve }))
     .then(results => {
       return writeValue(PLAYLIST_ITEMS_PROP(listId), results);

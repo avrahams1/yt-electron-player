@@ -30,11 +30,6 @@
 .item {
     width: 100%;
 
-    &.tableHeaders {
-        border-bottom: 1px solid white;
-        font-weight: bold;
-    }
-
     &:not(:last-child) {
         margin-bottom: 10px;
     }

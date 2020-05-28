@@ -3,6 +3,7 @@ import { replace } from "connected-react-router";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { merge, remove, random } from "lodash";
 import { loadPlaylistDetails } from "../../utils/googleApiUtils";
+import { useMocks } from "Core/config";
 import ROUTES from "Constants/routes";
 
 export const loadPlaylistIds = createAsyncThunk(
@@ -76,22 +77,22 @@ function loadPlaylistsDetails(_, { getState }) {
 
   if (idsToLoad.length === 0) return Promise.resolve([]);
 
-  /*
-  return new Promise(resolve => {
-    setTimeout(() => {
-      let dict = {};
-
-      idsToLoad.forEach(id => {
-        dict[id] = {
-          title: id + " playlist",
-          itemCount: random(1, 100)
-        };
-      });
-
-      resolve(dict);
-    }, random(500, 2500));
-  });
-  */
+  if (useMocks) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        let dict = {};
+  
+        idsToLoad.forEach(id => {
+          dict[id] = {
+            title: id + " playlist",
+            itemCount: random(1, 100)
+          };
+        });
+  
+        resolve(dict);
+      }, random(500, 2500));
+    });
+  }
 
   const promises = idsToLoad
     .map(id => {

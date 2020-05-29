@@ -29,7 +29,6 @@ const PlaylistPicker = ({ playlistIDs, noAutoSkip }) => {
 
   return (
     <FlexView column hAlignContent="center" className={styles.container}>
-      <div>Type playlist IDs, seperated by new lines:</div>
       <PlaylistList />
       <div>
         <input name="rememberChoices" type="checkbox" checked={rememberChoice} onChange={onRememberChanged} />

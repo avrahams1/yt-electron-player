@@ -44,6 +44,18 @@
     }
 }
 
+.new-item {
+    width: 95%;
+}
+
+.spinner, .loading-error {
+    margin-left: 10px;
+}
+
+.loading-error {
+    color: red;
+}
+
 .spinner {
     animation:spin 4s linear infinite;
 }

@@ -4,6 +4,7 @@ import FlexView from "react-flexview";
 import classNames from "classnames";
 import { FiPlusCircle, FiMinusCircle } from "react-icons/fi";
 import { FaSpinner } from "react-icons/fa";
+import { MdErrorOutline } from "react-icons/md";
 import { addPlaylistId, removePlaylistID, loadDetails } from "Redux/components/playlist-picker/playlistPickerSlice";
 
 import styles from "./playlists-list.scss";
@@ -46,7 +47,8 @@ const PlaylistsList = ({ playlistIDs, playlistDetails, addPlaylistId, removePlay
     return (
         <FlexView column hAlignContent="left" className={styles.container}>
             <button className={classNames(styles.addButton)} onClick={startAddNew}><FiPlusCircle /></button>
-            {playlistIDs.map(createListItem(playlistDetails, removePlaylistID))}
+            {!!playlistIDs.length && playlistIDs.map(createListItem(playlistDetails, removePlaylistID))}
+            {(!playlistIDs.length && !isAddingNew) && <div>No playlists added, click the + button to add a playlist</div>}
             {isAddingNew && renderNewItem(focusCallback, newPlaylistId, setNewPlaylistId, addNew)}
         </FlexView>
     )
@@ -79,14 +81,30 @@ function renderNewItem(focusCallback, newPlaylistId, setNewPlaylistId, addNew) {
 function createListItem(playlistDetails, removePlaylistID) {
     return playlistId => {
         const currPlaylistDetails = playlistDetails[playlistId];
-
-        const playlistDetailsRender = currPlaylistDetails ? 
-            <span>
-                {currPlaylistDetails.title} with {currPlaylistDetails.itemCount} items
-            </span> : <span>
+        let playlistDetailsRender;
+        
+        if (!currPlaylistDetails) {
+            playlistDetailsRender =
+             <span>
                 {playlistId}
                 <FaSpinner className={styles.spinner} />
             </span>;
+        } else {
+            const { title, itemCount, success } = currPlaylistDetails;
+
+            if (success) {
+                playlistDetailsRender = 
+                    <span>
+                        {title} with {itemCount} items
+                    </span>
+            } else {
+                playlistDetailsRender =
+                    <span>
+                        {playlistId}
+                        <MdErrorOutline className={styles.loadingError} />
+                    </span>
+            }
+        }
 
         return (
             <React.Fragment key={playlistId}>

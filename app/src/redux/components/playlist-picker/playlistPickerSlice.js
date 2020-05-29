@@ -103,7 +103,13 @@ function loadPlaylistsDetails(_, { getState }) {
           return {
             id,
             title,
-            itemCount
+            itemCount,
+            success: true
+          };
+        }).catch(e => {
+          return {
+            id,
+            success: false
           };
         });
     });
@@ -112,8 +118,8 @@ function loadPlaylistsDetails(_, { getState }) {
     let dict = {};
 
     resultsArr.forEach(result => {
-      const { id, title, itemCount } = result;
-      dict[id] = { title, itemCount };
+      const { id, title = '', itemCount = -1, success } = result;
+      dict[id] = { success, title, itemCount };
     })
 
     return dict;

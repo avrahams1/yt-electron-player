@@ -125,16 +125,12 @@ function shuffle(list) {
   let randomizedArray = [];
 
   while (copy.length) {
-    const index = getRandomInRange(0, copy.length - 1);
+    const index = random(copy.length - 1);
     randomizedArray.push(copy[index]);
     copy.splice(index, 1);
   }
 
   return randomizedArray;
-}
-
-function getRandomInRange(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function setCurrentIndex(state, newIndex) {

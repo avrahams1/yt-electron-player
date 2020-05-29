@@ -1,5 +1,6 @@
 .container {
     padding: 10px;
+    padding-top: 0;
     width: 50vw;
     border-left: 1px solid white;
     max-height: 50vh;
@@ -30,18 +31,22 @@
 .item {
     width: 100%;
 
+    &.mouseHoveredOverRemove {
+        .text {
+            background-color: #ADEFD1FF;
+            color: #00203FFF;
+        }
+    }
+
     &:not(:last-child) {
-        margin-bottom: 10px;
+        margin-bottom: 30px;
     }
 }
 
 .remove {
     margin-left: 10px;
     font-size: 20px;
-    
-    &:hover {
-        margin-bottom: -1px;
-    }
+    height: 25px;
 }
 
 .new-item {

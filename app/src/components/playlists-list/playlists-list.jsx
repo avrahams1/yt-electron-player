@@ -13,6 +13,7 @@ import styles from "./playlists-list.scss";
 const PlaylistsList = ({ playlistIDs, playlistDetails, addPlaylistId, removePlaylistID, addToastr }) => {
     const [isAddingNew, setIsAddingNew] = useState(false);
     const [newPlaylistId, setNewPlaylistId] = useState("");
+    const [removeButtonMouseHover, setRemoveButtonMouseHover] = useState("");
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -58,7 +59,7 @@ const PlaylistsList = ({ playlistIDs, playlistDetails, addPlaylistId, removePlay
     return (
         <FlexView column hAlignContent="left" className={styles.container}>
             <button className={classNames(styles.addButton)} onClick={startAddNew}><FiPlusCircle /></button>
-            {!!playlistIDs.length && playlistIDs.map(createListItem(playlistDetails, removePlaylistID))}
+            {!!playlistIDs.length && playlistIDs.map(createListItem(playlistDetails, removePlaylistID, removeButtonMouseHover, setRemoveButtonMouseHover))}
             {(!playlistIDs.length && !isAddingNew) && <div>No playlists added, click the + button to add a playlist</div>}
             {isAddingNew && renderNewItem(focusCallback, newPlaylistId, setNewPlaylistId, addNew)}
         </FlexView>
@@ -77,9 +78,9 @@ function renderNewItem(focusCallback, newPlaylistId, setNewPlaylistId, addNew) {
     };
 
     return (
-        <input 
-            type="text" 
-            className={styles.newItem} 
+        <input
+            type="text"
+            className={styles.newItem}
             value={newPlaylistId}
             onChange={setValue}
             onBlur={addNew}
@@ -89,39 +90,45 @@ function renderNewItem(focusCallback, newPlaylistId, setNewPlaylistId, addNew) {
     );
 }
 
-function createListItem(playlistDetails, removePlaylistID) {
+function createListItem(playlistDetails, removePlaylistID, removeButtonMouseHover, setRemoveButtonMouseHover) {
     return playlistId => {
         const currPlaylistDetails = playlistDetails[playlistId];
         let playlistDetailsRender;
-        
+
         if (!currPlaylistDetails) {
             playlistDetailsRender =
-             <span>
-                {playlistId}
-                <FaSpinner className={styles.spinner} />
-            </span>;
+                <React.Fragment>
+                    {playlistId}
+                    <FaSpinner className={styles.spinner} />
+                </React.Fragment>;
         } else {
             const { title, itemCount, success } = currPlaylistDetails;
 
             if (success) {
-                playlistDetailsRender = 
-                    <span>
-                        {title} with {itemCount} items
-                    </span>
+                playlistDetailsRender =
+                    <React.Fragment>{title} with {itemCount} items</React.Fragment>
             } else {
                 playlistDetailsRender =
-                    <span>
+                    <React.Fragment>
                         {playlistId}
                         <MdErrorOutline className={styles.loadingError} />
-                    </span>
+                    </React.Fragment>
             }
         }
 
+        const itemClasses = classNames(styles.item, {
+            [styles.mouseHoveredOverRemove]: removeButtonMouseHover === playlistId
+        })
+
         return (
             <React.Fragment key={playlistId}>
-                <FlexView className={styles.item} style={{ justifyContent: "space-between" }}>
-                    <div>{playlistDetailsRender}</div>
-                    <button onClick={() => removePlaylistID(playlistId)} className={styles.remove}><FiMinusCircle /></button>
+                <FlexView className={itemClasses} style={{ justifyContent: "space-between" }}>
+                    <div><span className={styles.text}>{playlistDetailsRender}</span></div>
+                    <button 
+                        onClick={() => removePlaylistID(playlistId)} 
+                        className={styles.remove}
+                        onMouseOver={() => setRemoveButtonMouseHover(playlistId)}
+                        onMouseOut={() => setRemoveButtonMouseHover("")}><FiMinusCircle /></button>
                 </FlexView>
             </React.Fragment>
         );
@@ -130,7 +137,7 @@ function createListItem(playlistDetails, removePlaylistID) {
 
 const mapStateToProps = (state, props) => {
     const { playlistIDs, playlistDetails } = state.playlistPicker;
-  
+
     return { playlistIDs, playlistDetails };
 };
 

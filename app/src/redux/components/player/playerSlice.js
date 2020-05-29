@@ -122,7 +122,7 @@ function loadPlaylistChunk({ playlistId, resolve, pageToken = "", prevItems = []
 
 function shuffle(list) {
   const copy = [...list];
-  let randomizedArray = [];
+  const randomizedArray = [];
 
   while (copy.length) {
     const index = random(copy.length - 1);

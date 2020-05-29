@@ -58,7 +58,7 @@ function getPlaylistIds(noAutoSkip, { dispatch }) {
 
   return basePromise
     .catch(() => {
-      return readValue(PLAYLIST_IDS_PROP).catch(() => (["PL8wFHI7-y_0w4AShZqurXcJIayFB9_jCa"]));
+      return readValue(PLAYLIST_IDS_PROP).catch(() => ([/*"PL8wFHI7-y_0w4AShZqurXcJIayFB9_jCa"*/]));
     });
 }
 
@@ -84,6 +84,7 @@ function loadPlaylistsDetails(_, { getState }) {
   
         idsToLoad.forEach(id => {
           dict[id] = {
+            success: true,
             title: id + " playlist",
             itemCount: random(1, 100)
           };

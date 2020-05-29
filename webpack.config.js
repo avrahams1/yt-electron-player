@@ -40,7 +40,6 @@ module.exports = isDev => ({
       // loads .css files
       {
         test: /\.css$/,
-        include: [path.resolve(__dirname, "app/src")],
         use: [
           MiniCssExtractPlugin.loader,
           {

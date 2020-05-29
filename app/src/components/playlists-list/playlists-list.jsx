@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { connect, useDispatch } from "react-redux";
 import FlexView from "react-flexview";
 import classNames from "classnames";
+import { actions as toastrActions } from 'react-redux-toastr'
 import { FiPlusCircle, FiMinusCircle } from "react-icons/fi";
 import { FaSpinner } from "react-icons/fa";
 import { MdErrorOutline } from "react-icons/md";
@@ -9,7 +10,7 @@ import { addPlaylistId, removePlaylistID, loadDetails } from "Redux/components/p
 
 import styles from "./playlists-list.scss";
 
-const PlaylistsList = ({ playlistIDs, playlistDetails, addPlaylistId, removePlaylistID }) => {
+const PlaylistsList = ({ playlistIDs, playlistDetails, addPlaylistId, removePlaylistID, addToastr }) => {
     const [isAddingNew, setIsAddingNew] = useState(false);
     const [newPlaylistId, setNewPlaylistId] = useState("");
     const dispatch = useDispatch();
@@ -37,8 +38,18 @@ const PlaylistsList = ({ playlistIDs, playlistDetails, addPlaylistId, removePlay
     const addNew = () => {
         setIsAddingNew(false);
 
-        if (newPlaylistId) {
+        const hasValue = !!newPlaylistId;
+        const alradyExists = playlistIDs.indexOf(newPlaylistId) !== -1;
+
+        if (hasValue && !alradyExists) {
             addPlaylistId(newPlaylistId);
+        }
+
+        if (hasValue && alradyExists) {
+            addToastr({
+                type: 'warning',
+                title: `Playlist "${newPlaylistId}" was already added, ignoring...`,
+            });
         }
 
         setNewPlaylistId("");
@@ -123,6 +134,6 @@ const mapStateToProps = (state, props) => {
     return { playlistIDs, playlistDetails };
 };
 
-const mapDispatch = { addPlaylistId, removePlaylistID };
+const mapDispatch = { addPlaylistId, removePlaylistID, addToastr: toastrActions.add };
 
 export default connect(mapStateToProps, mapDispatch)(PlaylistsList);

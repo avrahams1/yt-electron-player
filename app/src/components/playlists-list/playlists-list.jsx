@@ -25,15 +25,31 @@ const PlaylistsList = ({ playlistIDs, addPlaylistId, addToastr }) => {
 
     if (!playlistIDs) return null;
 
-    const startAddNew = () => {
+    const startAddNew = createStartAddNewFunc(isAddingNew, setIsAddingNew);
+    const addNew = createAddNewFunc(setIsAddingNew, newPlaylistId, playlistIDs, addPlaylistId, addToastr, setNewPlaylistId);
+
+    return (
+        <FlexView column hAlignContent="left" className={styles.container}>
+            <button className={styles.addButton} onClick={startAddNew}><FiPlusCircle /></button>
+            {!!playlistIDs.length && playlistIDs.map(id => <Item playlistId={id} key={id} />)}
+            {(!playlistIDs.length && !isAddingNew) && <div>No playlists added, click the + button to add a playlist</div>}
+            {isAddingNew && renderNewItem(focusCallback, newPlaylistId, setNewPlaylistId, addNew)}
+        </FlexView>
+    );
+};
+
+function createStartAddNewFunc(isAddingNew, setIsAddingNew) {
+    return () => {
         if (isAddingNew) {
             return;
         }
 
         setIsAddingNew(true);
     };
+}
 
-    const addNew = () => {
+function createAddNewFunc(setIsAddingNew, newPlaylistId, playlistIDs, addPlaylistId, addToastr, setNewPlaylistId) {
+    return () => {
         setIsAddingNew(false);
 
         const hasValue = !!newPlaylistId;
@@ -51,17 +67,8 @@ const PlaylistsList = ({ playlistIDs, addPlaylistId, addToastr }) => {
         }
 
         setNewPlaylistId("");
-    }
-
-    return (
-        <FlexView column hAlignContent="left" className={styles.container}>
-            <button className={styles.addButton} onClick={startAddNew}><FiPlusCircle /></button>
-            {!!playlistIDs.length && playlistIDs.map(id => <Item playlistId={id} key={id} />)}
-            {(!playlistIDs.length && !isAddingNew) && <div>No playlists added, click the + button to add a playlist</div>}
-            {isAddingNew && renderNewItem(focusCallback, newPlaylistId, setNewPlaylistId, addNew)}
-        </FlexView>
-    )
-};
+    };
+}
 
 function renderNewItem(focusCallback, newPlaylistId, setNewPlaylistId, addNew) {
     const setValue = event => {

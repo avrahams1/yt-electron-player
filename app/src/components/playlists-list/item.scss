@@ -1,0 +1,34 @@
+.item {
+    width: 100%;
+
+    &.mouseHoveredOverRemove {
+        .text {
+            background-color: #ADEFD1FF;
+            color: #00203FFF;
+        }
+    }
+
+    &:not(:last-child) {
+        margin-bottom: 30px;
+    }
+}
+
+.remove {
+    margin-left: 10px;
+    font-size: 20px;
+    height: 25px;
+}
+
+.spinner, .loading-error {
+    margin-left: 10px;
+}
+
+.loading-error {
+    color: red;
+}
+
+.spinner {
+    animation:spin 4s linear infinite;
+}
+
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }

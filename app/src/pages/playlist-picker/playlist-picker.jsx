@@ -3,7 +3,7 @@ import { connect, useDispatch } from "react-redux";
 import { get } from "lodash";
 import FlexView from 'react-flexview';
 import { loadPlaylistIds, saveIds } from "Redux/components/playlist-picker/playlistPickerSlice";
-import PlaylistList from "Components/playlists-list/playlists-list";
+import PlaylistList from "Components/playlists-list";
 
 import styles from "./playlist-picker.scss";
 

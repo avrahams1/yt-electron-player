@@ -8,8 +8,6 @@ const {
 } = require("electron");
 const productionServer = require("./production-server");
 const Protocol = require("./protocol");
-const MenuBuilder = require("./menu");
-const i18nextBackend = require("i18next-electron-fs-backend");
 const Store = require("secure-electron-store").default;
 const ContextMenu = require("secure-electron-context-menu").default;
 const path = require("path");
@@ -34,7 +32,6 @@ const installExtensions = async () => {
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
-let menuBuilder;
 
 async function createWindow() {
   if (isDev) {
@@ -62,9 +59,6 @@ async function createWindow() {
       preload: path.join(__dirname, "preload.js")
     }
   });
-
-  // Sets up main.js bindings for our i18next backend
-  i18nextBackend.mainBindings(ipcMain, win, fs);
 
   // Sets up main.js bindings for our electron store
   const store = new Store({
@@ -135,9 +129,6 @@ async function createWindow() {
   //     });
   //   }
   // });
-
-  menuBuilder = MenuBuilder(win, app.name);
-  menuBuilder.buildMenu();
 }
 
 // Needs to be called before app is ready;
@@ -164,7 +155,6 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
   } else {
-    i18nextBackend.clearMainBindings(ipcMain);
     ContextMenu.clearMainBindings(ipcMain);
   }
 });

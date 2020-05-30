@@ -15,7 +15,6 @@ function startProductionServer() {
 
     listener = expressApp.listen(initialPort, () => {
       const port = listener.address().port;
-      console.log('Listening on port ' + port);
       resolve(`http://localhost:${port}/index-prod.html`);
     });
   });
@@ -27,9 +26,9 @@ function closeProductionServer() {
 
 function determineStaticFilesPath() {
   switch (os.type()) {
-    case "Darwin": 
+    case "Darwin":  // Mac
       return path.resolve(app.getPath("exe"), "..", "..", appdistFolder);
-    case "Windows_NT":
+    case "Windows_NT": // Windows
     default:
       return appdistFolder;
   }

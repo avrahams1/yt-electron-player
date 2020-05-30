@@ -31,7 +31,7 @@ const PlaylistsList = ({ playlistIDs, addPlaylistId, addToastr }) => {
     return (
         <FlexView column hAlignContent="left" className={styles.container}>
             <button className={styles.addButton} onClick={startAddNew}><FiPlusCircle /></button>
-            {!!playlistIDs.length && playlistIDs.map(id => <Item playlistId={id} key={id} />)}
+            {playlistIDs.map(id => <Item playlistId={id} key={id} />)}
             {(!playlistIDs.length && !isAddingNew) && <div>No playlists added, click the + button to add a playlist</div>}
             {isAddingNew && renderNewItem(focusCallback, newPlaylistId, setNewPlaylistId, addNew)}
         </FlexView>

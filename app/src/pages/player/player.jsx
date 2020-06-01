@@ -18,7 +18,7 @@ const PlayerComponent = () => {
   }, []);
 
   return (
-    <FlexView vAlignContent="center" style={{ justifyContent: "space-between" }}>
+    <FlexView style={{ justifyContent: "space-between" }}>
       <FlexView grow marginRight="50px" column>
         <PlayerVideo />
         <PlayerControls />

@@ -87,11 +87,11 @@ function loadPlaylistFromAPI(listId) {
       setTimeout(() => {
         resolve([
           {
-            id: "RiFdyPOe3MA" + listId,
+            id: "RiFdyPOe3MA",
             name: "TANKS!" + listId
           },
           {
-            id: "pKBRx2UYaxM" + listId,
+            id: "pKBRx2UYaxM",
             name: "IMAGINE MY SHOCK" + listId
           }
         ]);

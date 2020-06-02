@@ -15,6 +15,7 @@ class PlaylistList extends React.Component {
 
     this.onSearchTermChangedDebounced = debounce(query => this.setState({ currentSearchTerm: query }), 700);
     this.toggleFolded = this.toggleFolded.bind(this);
+    this.renderListItem = this.renderListItem.bind(this);
 
     this.state = {
       isFolded: false,
@@ -29,7 +30,7 @@ class PlaylistList extends React.Component {
     }
 
     if (this.props.currentSong === prevProps.currentSong &&
-        this.state.currentSearchTerm === prevState.currentSearchTerm) {
+      this.state.currentSearchTerm === prevState.currentSearchTerm) {
       return;
     }
 
@@ -80,7 +81,11 @@ class PlaylistList extends React.Component {
     } : {};
 
     const onClick = e => {
-      setNewSongIndex(index);
+      this.setState({
+        displaySearchTerm: "",
+        currentSearchTerm: ""
+      }, () => { setNewSongIndex(index); });
+
       e.preventDefault();
     };
 
@@ -109,7 +114,7 @@ class PlaylistList extends React.Component {
         .filter(str => str)
         .map(str => str.trim())
         .filter(str => str);
-        
+
       if (lowerCaseSearchTerms.length) {
         filteredList = filteredList.filter(({ item }) => {
           const currItemName = item.name.toLowerCase();
@@ -128,7 +133,7 @@ class PlaylistList extends React.Component {
         <MdPlaylistPlay className={styles.foldButton} onClick={this.toggleFolded} />
         <input type="text" placeholder="Search" className={styles.searchBar} value={displaySearchTerm} onChange={this.onSearchTermChanged.bind(this)} />
         <FlexView column hAlignContent="left" className={styles.list}>
-          {filteredList.map(this.renderListItem.bind(this))}
+          {filteredList.map(this.renderListItem)}
         </FlexView>
       </FlexView>
     )

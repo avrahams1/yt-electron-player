@@ -97,4 +97,10 @@ dist/
 # VSCode specific
 .vscode/
 
-apikey_private
+.gitsecret/keys/random_seed
+!*.secret
+
+.gitsecret/random_seed
+
+googleApiToken.js
+keys/*

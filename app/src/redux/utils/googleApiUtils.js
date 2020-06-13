@@ -1,6 +1,5 @@
 import axios from "axios";
-
-const googleApiToken = "AIzaSyCu5KvidzCYLOY6mP0j9fXVCltfFuvkeGM";
+import googleApiToken from "./googleApiToken";
 
 export function loadPlaylistChunkApi(playlistId, pageToken = "") {
     const url = `${getBaseUrl("playlistItems")}part=snippet&maxResults=50&playlistId=${playlistId}&pageToken=${pageToken}`;

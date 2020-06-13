@@ -102,6 +102,5 @@ dist/
 
 .gitsecret/random_seed
 
-apikey_private
 googleApiToken.js
 keys/*

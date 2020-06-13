@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDom from "react-dom";
 import { connect } from "react-redux";
-import { debounce } from "lodash";
+import { debounce, identity } from "lodash";
 import { MdPlaylistPlay } from "react-icons/md";
 import classNames from "classnames";
 import FlexView from 'react-flexview';
@@ -111,9 +111,8 @@ class PlaylistList extends React.Component {
       const lowerCaseSearchTerms = currentSearchTerm
         .toLowerCase()
         .split(" ")
-        .filter(str => str)
-        .map(str => str.trim())
-        .filter(str => str);
+        .map(str => str && str.trim())
+        .filter(identity);
 
       if (lowerCaseSearchTerms.length) {
         filteredList = filteredList.filter(({ item }) => {

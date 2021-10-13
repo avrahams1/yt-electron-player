@@ -1,7 +1,7 @@
 {
   "name": "secure-electron-template",
-  "version": "2.0.4",
-  "description": "The best way to build Electron apps with security in mind.",
+  "version": "2.0.5",
+  "description": "Electron based YouTube playlist randomizer player",
   "private": true,
   "main": "app/electron/main.js",
   "scripts": {
@@ -42,19 +42,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reZach/secure-electron-template.git"
+    "url": "git+https://github.com/avrahams1/yt-electron-player.git"
   },
-  "keywords": [
-    "electron",
-    "security",
-    "template",
-    "react",
-    "redux",
-    "webpack",
-    "i18next",
-    "boilerplate"
-  ],
-  "author": "reZach",
+  "author": "Avi",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/reZach/secure-electron-template/issues"
